@@ -1,0 +1,170 @@
+.cinema-page {
+	min-height: 100vh;
+	background: #080a10;
+	color: #f5f1e8;
+	font-family: Georgia, 'Times New Roman', serif;
+}
+
+.hero {
+	min-height: 590px;
+	display: flex;
+	align-items: end;
+	padding: 72px clamp(24px, 8vw, 120px);
+	background-color: #11141d;
+	background-position: center;
+	background-size: cover;
+}
+
+.hero-content {
+	max-width: 590px;
+}
+
+.eyebrow,
+.card-genre {
+	margin: 0 0 14px;
+	color: #e8b85c;
+	font-family: Arial, sans-serif;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+}
+
+h1,
+h2,
+h3,
+p {
+	margin-top: 0;
+}
+
+h1 {
+	max-width: 700px;
+	margin-bottom: 20px;
+	font-size: clamp(42px, 7vw, 82px);
+	line-height: .95;
+}
+
+.film-meta {
+	display: flex;
+	gap: 18px;
+	margin-bottom: 20px;
+	color: #d8d2c5;
+	font-family: Arial, sans-serif;
+	font-size: 13px;
+}
+
+.film-meta span + span::before {
+	content: '•';
+	margin-right: 18px;
+	color: #e8b85c;
+}
+
+.hero-description {
+	max-width: 520px;
+	color: #c9c5bd;
+	font-family: Arial, sans-serif;
+	font-size: 16px;
+	line-height: 1.65;
+}
+
+.trailer-button {
+	display: inline-flex;
+	align-items: center;
+	gap: 14px;
+	margin-top: 12px;
+	padding: 14px 20px;
+	background: #e8b85c;
+	color: #17130c;
+	font-family: Arial, sans-serif;
+	font-size: 13px;
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.film-section {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 70px 24px 100px;
+}
+
+.section-heading h2 {
+	margin-bottom: 28px;
+	font-size: 38px;
+}
+
+.film-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+	gap: 24px;
+}
+
+.film-card {
+	overflow: hidden;
+	background: #121620;
+}
+
+.poster-wrap {
+	aspect-ratio: 2 / 3;
+	overflow: hidden;
+	background: #1d222d;
+}
+
+.poster-wrap img {
+	width: 100%;
+	height: 100%;
+	display: block;
+	object-fit: cover;
+}
+
+.film-card-content {
+	padding: 18px;
+}
+
+.film-card h3 {
+	margin-bottom: 12px;
+	font-size: 23px;
+}
+
+.card-genre,
+.card-duration {
+	font-family: Arial, sans-serif;
+}
+
+.card-genre {
+	margin-bottom: 9px;
+	font-size: 10px;
+}
+
+.card-duration {
+	margin-bottom: 0;
+	color: #9b9b9b;
+	font-size: 12px;
+}
+
+.empty-state {
+	min-height: 300px;
+	display: grid;
+	place-items: center;
+	color: #c9c5bd;
+	font-family: Arial, sans-serif;
+}
+
+@media (max-width: 600px) {
+	.hero {
+		min-height: 540px;
+		padding: 42px 24px;
+	}
+
+	.film-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 12px;
+	}
+
+	.film-card-content {
+		padding: 13px;
+	}
+
+	.film-card h3 {
+		font-size: 18px;
+	}
+}

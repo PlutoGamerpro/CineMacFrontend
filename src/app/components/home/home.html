@@ -1,0 +1,49 @@
+<main class="home-page">
+  <header class="site-header">
+    <a class="brand" routerLink="/" aria-label="CineMac forside">
+      <span class="brand-mark" aria-hidden="true">▣</span>
+      <span>CINEMAC</span>
+    </a>
+
+    <nav class="main-nav" aria-label="Hovednavigation">
+      <a class="active" routerLink="/">Forside</a>
+      <a routerLink="/film">Film</a>
+      <a href="#coming-soon">Kommende</a>
+      <a href="#showtimes">Spilletider</a>
+      <a href="#prices">Priser</a>
+      <a href="#about">Om os</a>
+      <a href="#facilities">Faciliteter</a>
+    </nav>
+
+    <div class="header-actions">
+      <button class="search-button" type="button" aria-label="Søg">⌕</button>
+      <a class="book-button" href="#showtimes">Book billet</a>
+    </div>
+  </header>
+
+  @if (featuredFilm; as film) {
+    <section class="hero" [style.backgroundImage]="'linear-gradient(90deg, rgba(8, 8, 13, .9) 0%, rgba(8, 8, 13, .55) 46%, rgba(8, 8, 13, .08) 100%), linear-gradient(0deg, rgba(8, 8, 13, .98) 0%, transparent 42%), url(' + film.billedeUrl + ')'">
+      <div class="hero-content">
+        <div class="film-tags">
+          <span>{{ film.genre }}</span>
+          <span>Premiere</span>
+          <span>{{ film.varighed }} min</span>
+        </div>
+        <h1>{{ film.title }}</h1>
+        <p>{{ film.beskrivelse }}</p>
+        <div class="hero-actions">
+          <a class="primary-button" href="#showtimes">Se spilletider <span aria-hidden="true">→</span></a>
+          @if (film.trailerUrl) {
+            <a class="secondary-button" [href]="film.trailerUrl" target="_blank" rel="noopener">Mere info</a>
+          }
+        </div>
+      </div>
+    </section>
+  } @else {
+    <section class="hero loading-hero">
+      <p>Filmene indlæses...</p>
+    </section>
+  }
+
+  <div class="hero-progress" aria-hidden="true"><span></span></div>
+</main>

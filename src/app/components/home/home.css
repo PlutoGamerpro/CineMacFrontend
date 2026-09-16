@@ -1,0 +1,257 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.home-page {
+  min-height: 100vh;
+  overflow: hidden;
+  background: #08080d;
+  color: #f8f7f3;
+  font-family: Arial, sans-serif;
+}
+
+.site-header {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 50%;
+  width: min(100% - 48px, 1312px);
+  height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transform: translateX(-50%);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #f8f7f3;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -.7px;
+  text-decoration: none;
+}
+
+.brand-mark {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 5px;
+  background: #f5a623;
+  color: #141117;
+  font-size: 17px;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: auto;
+  margin-right: 190px;
+}
+
+.main-nav a {
+  padding: 10px 13px;
+  border-radius: 4px;
+  color: #a5a3aa;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+  background: #241c15;
+  color: #f5a623;
+}
+
+.header-actions {
+  position: absolute;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.search-button {
+  border: 0;
+  background: transparent;
+  color: #d8d7db;
+  cursor: pointer;
+  font-size: 27px;
+  line-height: 1;
+}
+
+.book-button,
+.primary-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 15px;
+  border-radius: 4px;
+  background: #f5a623;
+  color: #17130e;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.book-button {
+  padding: 12px 18px;
+}
+
+.hero {
+  min-height: 760px;
+  display: flex;
+  align-items: center;
+  padding: 100px max(24px, calc((100vw - 1312px) / 2));
+  background-color: #17151c;
+  background-position: center;
+  background-size: cover;
+}
+
+.hero-content {
+  width: min(610px, 100%);
+  margin-top: 70px;
+}
+
+.film-tags {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  color: #c6c4c7;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.film-tags span {
+  padding: 6px 11px;
+  border-radius: 18px;
+  background: rgba(245, 166, 35, .2);
+  color: #f5b343;
+  font-weight: 700;
+}
+
+.film-tags span:last-child {
+  padding: 0;
+  background: transparent;
+  color: #bdbbc1;
+  font-weight: 400;
+}
+
+.hero h1 {
+  max-width: 720px;
+  margin: 0 0 16px;
+  color: #fff;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(50px, 6vw, 84px);
+  font-weight: 800;
+  letter-spacing: -3px;
+  line-height: .95;
+}
+
+.hero p {
+  max-width: 570px;
+  margin: 0;
+  color: #c9c6cc;
+  font-size: 19px;
+  line-height: 1.55;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 13px;
+  margin-top: 30px;
+}
+
+.primary-button {
+  padding: 15px 25px;
+}
+
+.secondary-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 15px 25px;
+  border: 1px solid rgba(255, 255, 255, .22);
+  border-radius: 4px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.hero-progress {
+  position: absolute;
+  right: 24px;
+  bottom: 26px;
+  left: 24px;
+  height: 2px;
+  background: rgba(255, 255, 255, .3);
+}
+
+.hero-progress span {
+  display: block;
+  width: 31%;
+  height: 100%;
+  background: #f5a623;
+}
+
+.loading-hero {
+  justify-content: center;
+  color: #bbb7bd;
+}
+
+@media (max-width: 900px) {
+  .main-nav {
+    display: none;
+  }
+
+  .hero {
+    min-height: 700px;
+  }
+}
+
+@media (max-width: 600px) {
+  .site-header {
+    width: calc(100% - 32px);
+  }
+
+  .brand {
+    font-size: 15px;
+  }
+
+  .header-actions {
+    gap: 8px;
+  }
+
+  .search-button {
+    display: none;
+  }
+
+  .book-button {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .hero {
+    min-height: 680px;
+    padding: 90px 24px 70px;
+    background-position: 62% center;
+  }
+
+  .hero-content {
+    margin-top: 100px;
+  }
+
+  .hero h1 {
+    font-size: clamp(42px, 14vw, 66px);
+    letter-spacing: -2px;
+  }
+
+  .hero p {
+    font-size: 16px;
+  }
+}
