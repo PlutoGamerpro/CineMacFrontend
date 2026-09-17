@@ -1,0 +1,105 @@
+:host {
+  position: relative;
+  z-index: 5;
+  display: block;
+  background: #090a10;
+}
+
+.site-header {
+  width: min(100% - 48px, 1312px);
+  height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 auto;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #f8f7f3;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.brand-mark {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border-radius: 3px;
+  background: #f5a623;
+  color: #141117;
+  font-size: 13px;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  margin-right: 156px;
+}
+
+.main-nav a {
+  padding: 9px 11px;
+  border-radius: 4px;
+  color: #8f8e98;
+  font-size: 11px;
+  text-decoration: none;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+  background: #241c15;
+  color: #f5a623;
+}
+
+.header-actions {
+  position: absolute;
+  right: max(24px, calc((100% - 1312px) / 2));
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.search-button {
+  border: 0;
+  background: transparent;
+  color: #d8d7db;
+  cursor: pointer;
+  font-size: 21px;
+  line-height: 1;
+}
+
+.book-button {
+  padding: 9px 14px;
+  border-radius: 3px;
+  background: #f5a623;
+  color: #17130e;
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+@media (max-width: 900px) {
+  .main-nav {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .site-header {
+    width: calc(100% - 32px);
+  }
+
+  .header-actions {
+    right: 16px;
+  }
+
+  .search-button {
+    display: none;
+  }
+}

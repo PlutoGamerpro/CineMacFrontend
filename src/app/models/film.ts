@@ -5,5 +5,6 @@ export interface Film {
     genre: string;
     varighed: number;
     trailerUrl: string;
-    billedeUrl: string;
+    billedeturl: string;
+    
 }

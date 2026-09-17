@@ -1,28 +1,6 @@
 <main class="home-page">
-  <header class="site-header">
-    <a class="brand" routerLink="/" aria-label="CineMac forside">
-      <span class="brand-mark" aria-hidden="true">▣</span>
-      <span>CINEMAC</span>
-    </a>
-
-    <nav class="main-nav" aria-label="Hovednavigation">
-      <a class="active" routerLink="/">Forside</a>
-      <a routerLink="/film">Film</a>
-      <a href="#coming-soon">Kommende</a>
-      <a href="#showtimes">Spilletider</a>
-      <a href="#prices">Priser</a>
-      <a href="#about">Om os</a>
-      <a href="#facilities">Faciliteter</a>
-    </nav>
-
-    <div class="header-actions">
-      <button class="search-button" type="button" aria-label="Søg">⌕</button>
-      <a class="book-button" href="#showtimes">Book billet</a>
-    </div>
-  </header>
-
   @if (featuredFilm; as film) {
-    <section class="hero" [style.backgroundImage]="'linear-gradient(90deg, rgba(8, 8, 13, .9) 0%, rgba(8, 8, 13, .55) 46%, rgba(8, 8, 13, .08) 100%), linear-gradient(0deg, rgba(8, 8, 13, .98) 0%, transparent 42%), url(' + film.billedeUrl + ')'">
+    <section class="hero" [style.backgroundImage]="'linear-gradient(90deg, rgba(8, 8, 13, .9) 0%, rgba(8, 8, 13, .55) 46%, rgba(8, 8, 13, .08) 100%), linear-gradient(0deg, rgba(8, 8, 13, .98) 0%, transparent 42%), url(' + film.billedeturl + ')'">
       <div class="hero-content">
         <div class="film-tags">
           <span>{{ film.genre }}</span>
@@ -41,9 +19,62 @@
     </section>
   } @else {
     <section class="hero loading-hero">
-      <p>Filmene indlæses...</p>
+      <p>{{ errorMessage || 'Filmene indlæses...' }}</p>
     </section>
   }
 
   <div class="hero-progress" aria-hidden="true"><span></span></div>
+
+  @if (currentFilms.length > 0) {
+    <section class="film-section current-section" id="showtimes">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">På lærredet nu</p>
+          <h2>Aktuelle film</h2>
+        </div>
+        <a class="section-link" routerLink="/film">Se alle <span aria-hidden="true">→</span></a>
+      </div>
+
+      <div class="film-row">
+        @for (film of currentFilms; track film.id ?? $index) {
+          <article class="film-card">
+            <a class="poster-wrap" [routerLink]="['/film']" [attr.aria-label]="'Se ' + film.title">
+              <img [src]="film.billedeturl" [alt]="film.title" />
+              <span class="film-badge">{{ film.genre }}</span>
+            </a>
+            <div class="film-card-content">
+              <h3>{{ film.title }}</h3>
+              <p>{{ film.varighed }} min. <span aria-hidden="true">•</span> {{ film.genre }}</p>
+            </div>
+          </article>
+        }
+      </div>
+    </section>
+  }
+
+  @if (upcomingFilms.length > 0) {
+    <section class="film-section upcoming-section" id="coming-soon">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">Snart i biografen</p>
+          <h2>Kommende film</h2>
+        </div>
+        <a class="section-link" routerLink="/film">Se alle <span aria-hidden="true">→</span></a>
+      </div>
+
+      <div class="upcoming-grid">
+        @for (film of upcomingFilms; track film.id ?? $index) {
+          <article class="upcoming-card">
+            <img [src]="film.billedeturl" [alt]="film.title" />
+            <div>
+              <p class="section-kicker">{{ film.genre }}</p>
+              <h3>{{ film.title }}</h3>
+              <p class="upcoming-description">{{ film.beskrivelse }}</p>
+              <a class="small-button" routerLink="/film">Læs mere <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+        }
+      </div>
+    </section>
+  }
 </main>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Film } from "../models/film"
+import { Observable, shareReplay } from 'rxjs';
+import { Film } from '../models/film';
 
 
 
@@ -9,12 +9,17 @@ import { Film } from "../models/film"
   providedIn: 'root'
 })
 export class FilmService {
-  private apiUrl = 'https://localhost:7269/api/Films/GetFilms'; // Replace with your API endpoint
+  private readonly apiUrl = 'https://localhost:7269/api/Films/GetFilms';
+  private readonly films$: Observable<Film[]>;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.films$ = this.http.get<Film[]>(this.apiUrl).pipe(shareReplay(1));
+  }
 
-  GetFilm():Observable<Film[]> {
-    return this.http.get<Film[]>(this.apiUrl);
+  GetFilm(): Observable<Film[]> {
+    // Both the front page and /film use this same request.  Sharing it prevents
+    // one route from receiving a different response while the other is loading.
+    return this.films$;
   }
   GetFilmById(id:number): Observable<Film>{
     return this.http.get<Film>(`${this.apiUrl}/${id}`);
