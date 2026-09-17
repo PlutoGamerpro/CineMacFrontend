@@ -10,7 +10,7 @@
         <h1>{{ film.title }}</h1>
         <p>{{ film.beskrivelse }}</p>
         <div class="hero-actions">
-          <a class="primary-button" href="#showtimes">Se spilletider <span aria-hidden="true">→</span></a>
+          <a class="primary-button" routerLink="/showtimes">Se spilletider <span aria-hidden="true">→</span></a>
           @if (film.trailerUrl) {
             <a class="secondary-button" [href]="film.trailerUrl" target="_blank" rel="noopener">Mere info</a>
           }
