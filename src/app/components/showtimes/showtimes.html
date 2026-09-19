@@ -1,49 +1,76 @@
 <main class="showtimes-page">
+  <section class="showtimes-intro">
+    <p class="eyebrow">Oversigt</p>
+    <h1>Spilletider</h1>
+
+    <nav class="date-tabs" aria-label="Vælg dato">
+      <button
+        type="button"
+        class="date-tab"
+        [class.active]="selectedDate === null"
+        (click)="selectDate(null)">
+        Alle dage
+      </button>
+
+      @for (date of dateOptions; track date) {
+        <button
+          type="button"
+          class="date-tab"
+          [class.active]="selectedDate === date"
+          (click)="selectDate(date)">
+          {{ date | date:'EEEE d. MMM':'':'da-DK' }}
+        </button>
+      }
+    </nav>
+  </section>
 
   @if (isLoading) {
-
-    <p>Henter spilletider...</p>
+    <p class="empty-message">Henter spilletider...</p>
 
   } @else if (errorMessage) {
-
-    <p class="error">{{ errorMessage }}</p>
+    <p class="empty-message error">{{ errorMessage }}</p>
 
   } @else if (filmShowtimes.length === 0) {
-
-    <p>Ingen spilletider fundet.</p>
+    <p class="empty-message">Ingen spilletider fundet.</p>
 
   } @else {
+    <section class="showtimes-list" aria-label="Film og spilletider">
+      @for (filmGroup of filmShowtimes; track filmGroup.filmId) {
+        <article class="movie-showtimes">
+          <header class="movie-header">
+            <img
+              class="movie-poster"
+              [src]="filmGroup.billedeturl"
+              [alt]="filmGroup.title + ' plakat'" />
 
-    @for (filmGroup of filmShowtimes; track filmGroup.filmId) {
+            <div class="movie-details">
+              <h2>{{ filmGroup.title }}</h2>
+              <p>
+                {{ filmGroup.varighed }} min
+                <span>•</span>
+                {{ filmGroup.genre }}
+                <span>•</span>
+                Trailer
+                <span class="age-badge">12+</span>
+              </p>
+            </div>
+          </header>
 
-      <div class="film-card">
-
-        <h2>
-          {{ filmGroup.title }}
-          ({{ filmGroup.varighed }} min)
-        </h2>
-
-        <p>
-          <strong>Genre:</strong>
-          {{ filmGroup.genre }}
-        </p>
-
-        <div class="showtimes-list">
-
-          @for (st of filmGroup.showtimes; track st.id) {
-
-            <span class="showtime-badge">
-              {{ st.startTime | date:'HH:mm' }}
-              ({{ st.salNavn }})
-            </span>
-
-          }
-
-        </div>
-
-      </div>
-
-    }
+          <div class="movie-times">
+            @for (st of filmGroup.showtimes; track st.id) {
+              <button type="button" class="time-card">
+                <strong>{{ st.startTime | date:'HH:mm' }}</strong>
+                <span class="format-label">
+                  {{ st.salNavn.toLowerCase().includes('imax') ? 'IMAX' : '2D' }}
+                </span>
+                <span class="hall-label">{{ st.salNavn }}</span>
+                <span class="price-label">fra 75 kr</span>
+              </button>
+            }
+          </div>
+        </article>
+      }
+    </section>
 
   }
 

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FilmService } from '../../services/film.service';
 import { Film } from '../../models/film';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-film-list',
@@ -16,7 +17,7 @@ export class FilmList implements OnInit {
   isLoading = false;
   errorMessage = '';
 
-  constructor(private filmService: FilmService) {}
+  constructor(private filmService: FilmService, private changeDetector: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.loadFilms();
@@ -30,6 +31,7 @@ export class FilmList implements OnInit {
       next: (data: Film[]) => {
         this.films = data ?? [];
         this.isLoading = false;
+        this.changeDetector.markForCheck();
       },
       error: (error) => {
         console.error('Kunne ikke hente film:', error);

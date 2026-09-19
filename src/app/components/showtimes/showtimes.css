@@ -10,6 +10,10 @@
 }
 
 .showtimes-intro {
+    min-height: 190px;
+}
+
+.showtimes-intro {
     padding: 34px max(24px, calc((100% - 1240px) / 2)) 36px;
     border-bottom: 1px solid #181925;
 }
@@ -177,6 +181,10 @@ h1 {
     text-align: center;
 }
 
+.error {
+    color: #ed6976;
+}
+
 @media (max-width: 600px) {
     .showtimes-intro {
         padding: 28px 20px 30px;
@@ -188,6 +196,10 @@ h1 {
 
     .date-tab {
         flex: 1 1 auto;
+    }
+
+    .showtimes-intro {
+        min-height: auto;
     }
 }
 
