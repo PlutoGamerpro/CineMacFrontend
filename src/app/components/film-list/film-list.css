@@ -105,6 +105,18 @@ h1 {
 
 .film-card {
   min-width: 0;
+  cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.film-card:hover {
+  transform: translateY(-2px);
+}
+
+.film-card:focus-visible {
+  outline: 2px solid #f5a623;
+  outline-offset: 3px;
+  border-radius: 6px;
 }
 
 .poster-wrap {
@@ -113,6 +125,7 @@ h1 {
   overflow: hidden;
   border-radius: 5px;
   background: #171821;
+  cursor: pointer;
 }
 
 .poster-wrap::after {

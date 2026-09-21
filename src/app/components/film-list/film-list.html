@@ -27,9 +27,17 @@
       <p class="result-count">{{ filteredFilms.length }} film vises</p>
       <div class="film-grid">
         @for (film of filteredFilms; track film.id) {
-          <article class="film-card">
+          <article
+            class="film-card"
+            role="button"
+            tabindex="0"
+            [attr.aria-label]="'Se film ' + film.title"
+            (click)="onFilmClick(film)"
+            (keydown.enter)="onFilmClick(film)"
+            (keydown.space)="onFilmClick(film); $event.preventDefault()"
+          >
             <div class="poster-wrap">
-              <img [src]="film.billedeturl" [alt]="film.title" />
+              <img [src]="film.billedeturl" [alt]="film.title" (click)="onFilmClick(film); $event.stopPropagation()" />
               <span class="age-badge">{{ film.genre }}</span>
             </div>
             <div class="film-card-content">

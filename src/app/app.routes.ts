@@ -6,6 +6,7 @@ import { FilmList } from './components/film-list/film-list';
 import { Showtimes } from './components/showtimes/showtimes';
 import { Prices } from './components/prices/prices';
 
+
 export const routes: Routes = [
 	{ path: '', component: Home },
 	{ path: 'film', component: FilmList },
@@ -14,4 +15,5 @@ export const routes: Routes = [
 	{ path: 'showtimes', component: Showtimes },
 	{ path: 'prices', component: Prices },
 	{ path: '**', redirectTo: '' },
+	{path: 'film/:id', component: FilmList}
 ];
