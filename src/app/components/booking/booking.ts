@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import {ChangeDetectorRef} from '@angular/core';
 import { BookingService } from '../../services/booking.service';
 import {Booking} from '../../models/Booking';
+import {FILM_IMAGES} from '../../images';
 
 @Component({
   imports: [CommonModule, FormsModule],
@@ -13,6 +14,7 @@ import {Booking} from '../../models/Booking';
 })
 export class Bookingp implements OnInit {
 
+  readonly cinemaImages = FILM_IMAGES; 
   errorMessage = '';
   bookings: Booking[] = [];
   isLoading = false;

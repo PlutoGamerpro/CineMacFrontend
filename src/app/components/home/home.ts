@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Film } from '../../models/film';
 import { FilmService } from '../../services/film.service';
-
+import {FILM_IMAGES} from '../../images';
 
 @Component({
   selector: 'app-home',
@@ -11,6 +11,9 @@ import { FilmService } from '../../services/film.service';
   templateUrl: './home.html',
 })
 export class Home {
+
+  readonly  filmImages = FILM_IMAGES;
+
   featuredFilm?: Film;
   currentFilms: Film[] = [];
   upcomingFilms: Film[] = [];

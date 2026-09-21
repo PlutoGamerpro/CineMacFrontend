@@ -1,6 +1,6 @@
 <main class="home-page">
   @if (featuredFilm; as film) {
-    <section class="hero" [style.backgroundImage]="'linear-gradient(90deg, rgba(8, 8, 13, .9) 0%, rgba(8, 8, 13, .55) 46%, rgba(8, 8, 13, .08) 100%), linear-gradient(0deg, rgba(8, 8, 13, .98) 0%, transparent 42%), url(' + film.billedeturl + ')'">
+    <section class="hero" [style.backgroundImage]="'linear-gradient(90deg, rgba(8, 8, 13, .9) 0%, rgba(8, 8, 13, .55) 46%, rgba(8, 8, 13, .08) 100%), linear-gradient(0deg, rgba(8, 8, 13, .98) 0%, transparent 42%), url(' + (filmImages.shadowGuardianHero || film.billedeturl) + ')'">
       <div class="hero-content">
         <div class="film-tags">
           <span>{{ film.genre }}</span>

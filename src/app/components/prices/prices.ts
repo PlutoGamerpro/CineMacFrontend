@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {FILM_IMAGES} from '../../images';
 
 interface PriceItem {
   title: string;
@@ -17,6 +18,7 @@ interface PriceItem {
 })
 export class Prices {
 
+  readonly  filmImages = FILM_IMAGES;
 
     
   ticketPrices: PriceItem[] = [
