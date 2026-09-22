@@ -1,14 +1,16 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FilmService } from '../../services/film.service';
 import { Film } from '../../models/film';
 import { ChangeDetectorRef } from '@angular/core';
+  
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-film-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   styleUrl: './film-list.css',
   templateUrl: './film-list.html',
 })
@@ -19,7 +21,7 @@ export class FilmList implements OnInit {
   selectedGenre = 'Alle genrer';
   isLoading = false;
   errorMessage = '';
-
+  private routert = inject(Router);
   //private route = inject(ActivatedRoute);
 
   constructor(private filmService: FilmService, private changeDetector: ChangeDetectorRef, private router: ActivatedRoute) {}
@@ -89,13 +91,22 @@ export class FilmList implements OnInit {
   }
 
   onFilmClick(film: Film): void {
-    
+    // Navigates the browser URL to /films/1 or /films/2
+    this.routert.navigate(['/films', film.id]);
+  }
+
+/*
+  onFilmClick(film: Film): void {
+   
+    console.log('Clicked film:', film);
+
   const Id = this.router.snapshot.paramMap.get('id');
     if (Id) {
       const filmId = parseInt(Id, 10);
       this.LoadFilmById(filmId);
+   
     }
-
+*/
    
   }
-}
+

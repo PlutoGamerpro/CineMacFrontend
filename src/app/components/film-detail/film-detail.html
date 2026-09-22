@@ -1,0 +1,39 @@
+<div class="container">
+  
+  <!-- 1. Indlæser data -->
+  @if (isLoading) {
+    <div class="state-card loading">
+      <div class="spinner"></div>
+      <p>Henter filmoplysninger...</p>
+    </div>
+  }
+
+  <!-- 2. Ingen data fundet eller FEJL -->
+  @else if (errorMessage) {
+    <div class="state-card error">
+      <div class="icon">⚠️</div>
+      <h2>Ingen data fundet</h2>
+      <p>{{ errorMessage }}</p>
+      <a routerLink="/films" class="btn">← Tilbage til alle film</a>
+    </div>
+  }
+
+  <!-- 3. Data fundet! -->
+  @else if (film) {
+    <div class="film-card">
+      <div class="poster-wrap">
+        <img [src]="film.billedeturl" [alt]="film.title" />
+      </div>
+      <div class="film-info">
+        <span class="badge">{{ film.genre }}</span>
+        <h1>{{ film.title }}</h1>
+        <p class="meta">⏱️ {{ film.varighed }} minutter</p>
+        
+        <div class="actions">
+          <a routerLink="/films" class="btn">← Tilbage til oversigt</a>
+        </div>
+      </div>
+    </div>
+  }
+
+</div>

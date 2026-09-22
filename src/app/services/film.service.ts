@@ -22,7 +22,7 @@ export class FilmService {
     // one route from receiving a different response while the other is loading.
     return this.films$;
   }
-  GetFilmById(id:number): Observable<Film>{
+  GetFilmById(id:number | string): Observable<Film>{
     return this.http.get<Film>(`${this.apiUrlById}/${id}`);
   }
 }
