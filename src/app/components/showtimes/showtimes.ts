@@ -3,7 +3,8 @@ import { CommonModule, registerLocaleData } from '@angular/common';
 import localeDa from '@angular/common/locales/da';
 // import { finalize } from 'rxjs';
 import { FilmShowtime, SpilletidService } from '../../services/spilletid.service';
-
+import { Router } from '@angular/router';
+import { Film } from '../../models/film';
 registerLocaleData(localeDa);
 
 @Component({
@@ -23,6 +24,7 @@ export class Showtimes implements OnInit {
   constructor(
     private spilletidService: SpilletidService,
     private changeDetectorRef: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -65,5 +67,11 @@ GetGroupShowtimes(): void {
   selectDate(date: string | null): void {
     this.selectedDate = date;
     this.GetGroupShowtimes();
+  }
+
+  OnShowTimeClick(film: any): void {
+
+    console.log('Clicked showtime:', film);
+    this.router.navigate(['/booking', film.id]);
   }
 }

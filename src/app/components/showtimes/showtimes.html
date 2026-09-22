@@ -9,7 +9,7 @@
         class="date-tab"
         [class.active]="selectedDate === null"
         (click)="selectDate(null)">
-        Alle dage
+         Alle dage
       </button>
 
       @for (date of dateOptions; track date) {
@@ -58,7 +58,11 @@
 
           <div class="movie-times">
             @for (st of filmGroup.showtimes; track st.id) {
-              <button type="button" class="time-card">
+              <button type="button"
+               class="time-card"
+              (click)="OnShowTimeClick(st)"
+              
+              >
                 <strong>{{ st.startTime | date:'HH:mm' }}</strong>
                 <span class="format-label">
                   {{ st.salNavn.toLowerCase().includes('imax') ? 'IMAX' : '2D' }}

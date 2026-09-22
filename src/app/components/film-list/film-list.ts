@@ -21,10 +21,10 @@ export class FilmList implements OnInit {
   selectedGenre = 'Alle genrer';
   isLoading = false;
   errorMessage = '';
-  private routert = inject(Router);
+  //private routert = inject(Router);
   //private route = inject(ActivatedRoute);
 
-  constructor(private filmService: FilmService, private changeDetector: ChangeDetectorRef, private router: ActivatedRoute) {}
+  constructor(private filmService: FilmService, private changeDetector: ChangeDetectorRef, private router: Router) {}
 
 
   
@@ -92,7 +92,7 @@ export class FilmList implements OnInit {
 
   onFilmClick(film: Film): void {
     // Navigates the browser URL to /films/1 or /films/2
-    this.routert.navigate(['/films', film.id]);
+    this.router.navigate(['/films', film.id]);
   }
 
 /*

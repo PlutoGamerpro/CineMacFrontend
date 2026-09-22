@@ -18,14 +18,18 @@ export interface BookingEntry {
 export class BookingService { 
     
     private GetBookingApiUrl = "https://localhost:7269/api/Bookings/GetAllBookings";
+    private CreateBookingApiUrl = "https://localhost:7269/api/Bookings/CreateBooking";
 
-
+    private GetBookingsByShowtimeIdApiUrl ="https://localhost:7269/api/Bookings/GetBookingsForShowtime";
     constructor(private http: HttpClient) {}
 
     GetBookings(): Observable<Booking[]> {
         return this.http.get<Booking[]>(this.GetBookingApiUrl);
     }
     CreateBooking(booking: Booking): Observable<Booking> {
-        return this.http.post<Booking>(this.GetBookingApiUrl, booking);
+        return this.http.post<Booking>(this.CreateBookingApiUrl, booking);
+    }
+    GetBookingsByShowtimeId(showtimeId: number): Observable<Booking[]> {
+        return this.http.get<Booking[]>(`${this.GetBookingsByShowtimeIdApiUrl}/${showtimeId}`);
     }
 }

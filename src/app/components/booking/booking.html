@@ -1,1 +1,205 @@
 
+
+  
+
+<main class="booking-page">
+  <section class="movie-info">
+     <span class="back">‹ &nbsp; Tilbage</span>
+    <div>
+      <h1>films navn</h1>
+      <p>films dato</p>
+    </div>
+  </section>
+
+  <div class="steps">
+    <div class="step completed"><b>✓</b> Film</div>
+    <i></i>
+    <div class="step completed"><b>✓</b> Spilletid</div>
+    <i></i>
+    <div class="step active"><b>3</b> Sæde</div>
+    <i></i>
+    <div class="step disabled"><b>4</b> Betaling</div>
+  </div>
+
+  <div class="screen">LÆRRED</div>
+
+  <section class="seat-layout">
+    <div class="row">
+      <label>A</label>
+
+
+ <div class="seats">
+@for (seat of rowseats; track seat.id) {
+  <span
+    class="seat"
+    [class.selected]="seat.isSelected"
+    (click)="ClickOnSeat(seat)"
+  >
+    {{ seat.id }}
+  </span>
+}
+</div>
+      <label>A</label>
+    </div>
+
+    <div class="row">
+      <label>B</label>
+      <div class="seats">
+        @for (seat of rowseats; track seat.id) {
+          <span 
+            class="seat" 
+            [class.available]="seat.isAvailable" 
+            [class.occupied]="seat.isOccupied"
+            [class.selected]="seat.isSelected"
+            (click)="ClickOnSeat(seat)"
+            role="button"
+            tabindex="0"
+          ></span>
+        }
+      
+
+
+      </div>
+      <label>B</label>
+    </div>
+
+    <div class="row">
+  <label>C</label>
+
+<div class="seats">
+  @for (seat of rowseats; track seat.id) {
+    <span 
+      class="seat"
+      [class.available]="seat.isAvailable && !seat.isSelected" 
+      [class.occupied]="seat.isOccupied"
+      [class.selected]="seat.isSelected"
+      (click)="ClickOnSeat(seat)"
+      role="button"
+      tabindex="0"
+    ></span>
+  }
+</div>
+  <label>C</label>
+</div>
+
+    <div class="row">
+      <label>D</label>
+     
+<div class="seats">
+  @for (seat of rowseats; track seat.id) {
+    <span 
+      class="seat"
+      [class.available]="seat.isAvailable && !seat.isSelected" 
+      [class.occupied]="seat.isOccupied"
+      [class.selected]="seat.isSelected"
+      (click)="ClickOnSeat(seat)"
+      role="button"
+      tabindex="0"
+    ></span>
+  }
+</div>
+      <label>D</label>
+    </div>
+
+    <div class="row">
+      <label>E</label>
+     
+<div class="seats">
+  @for (seat of rowseats; track seat.id) {
+    <span 
+      class="seat"
+      [class.available]="seat.isAvailable && !seat.isSelected" 
+      [class.occupied]="seat.isOccupied"
+      [class.selected]="seat.isSelected"
+      (click)="ClickOnSeat(seat)"
+      role="button"
+      tabindex="0"
+    ></span>
+  }
+</div>
+      <label>E</label>
+    </div>
+
+    <div class="row">
+      <label>F</label>
+     
+<div class="seats">
+  @for (seat of rowseats; track seat.id) {
+    <span 
+      class="seat"
+      [class.available]="seat.isAvailable && !seat.isSelected" 
+      [class.occupied]="seat.isOccupied"
+      [class.selected]="seat.isSelected"
+      (click)="ClickOnSeat(seat)"
+      role="button"
+      tabindex="0"
+    ></span>
+  }
+</div>
+      <label>F</label>
+    </div>
+
+    <div class="row">
+      <label>G</label>
+     
+<div class="seats">
+  @for (seat of rowseats; track seat.id) {
+    <span 
+      class="seat"
+      [class.available]="seat.isAvailable && !seat.isSelected" 
+      [class.occupied]="seat.isOccupied"
+      [class.selected]="seat.isSelected"
+      (click)="ClickOnSeat(seat)"
+      role="button"
+      tabindex="0"
+    ></span>
+  }
+</div>
+      <label>G</label>
+    </div>
+
+    <div class="row">
+      <label>H</label>
+    
+<div class="seats">
+  @for (seat of rowseats; track seat.id) {
+    <span 
+      class="seat"
+      [class.available]="seat.isAvailable && !seat.isSelected" 
+      [class.occupied]="seat.isOccupied"
+      [class.selected]="seat.isSelected"
+      (click)="ClickOnSeat(seat)"
+      role="button"
+      tabindex="0"
+    ></span>
+  }
+</div>
+      <label>H</label>
+    </div>
+
+    <div class="row">
+      <label>I</label>
+      <div class="seats">
+        <span class="seat available"></span><span class="seat available"></span><span class="seat available"></span><span class="seat available"></span><span class="seat available"></span><span class="seat available"></span>
+        <em></em>
+        <span class="seat available"></span><span class="seat available"></span><span class="seat available"></span><span class="seat available"></span><span class="seat available"></span><span class="seat available"></span><span class="seat available"></span><span class="seat available"></span>
+      </div>
+      <label>I</label>
+    </div>
+  </section>
+
+  <div class="seat-numbers">
+    <span></span>
+    <small>1</small><small>2</small><small>3</small><small>4</small><small>5</small><small>6</small><small>7</small>
+    <span></span>
+    <small>8</small><small>9</small><small>10</small><small>11</small><small>12</small><small>13</small><small>14</small>
+    <span></span>
+  </div>
+
+  <footer class="legend">
+    <div><span class="legend-seat available"></span> Ledig</div>
+    <div><span class="legend-seat selected"></span> Valgt</div>
+    <div><span class="legend-seat occupied"></span> Optaget</div>
+    <p>104 ledige af 126 sæder</p>
+  </footer>
+</main>

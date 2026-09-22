@@ -1,0 +1,344 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #08080e;
+  color: #888893;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.navbar {
+  height: 50px;
+  padding: 0 calc((100% - 840px) / 2);
+  display: flex;
+  align-items: center;
+  gap: 95px;
+  border-top: 5px solid #17171e;
+  border-bottom: 1px solid #15151d;
+  background: #09090f;
+  white-space: nowrap;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #f0f0f2;
+  font-size: 12px;
+}
+
+.brand span span,
+.brand strong span {
+  color: #f5a623;
+}
+
+.brand-icon {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 4px;
+  background: #f5a623;
+  color: #111;
+  font-size: 13px;
+}
+
+.navbar nav {
+  display: flex;
+  gap: 23px;
+  font-size: 10px;
+}
+
+.navbar nav a {
+  color: #85858f;
+  text-decoration: none;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-left: auto;
+}
+
+.search {
+  color: #aaaab2;
+  font-size: 22px;
+  transform: rotate(-20deg);
+}
+
+.actions button {
+  border: 0;
+  border-radius: 3px;
+  padding: 8px 14px;
+  background: #f5a623;
+  color: #111;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.booking-page {
+  width: 666px;
+  margin: 0 auto;
+}
+
+.movie-info {
+  height: 55px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  border-bottom: 1px solid #15151d;
+}
+
+.back {
+  font-size: 10px;
+  color: #74747e;
+}
+
+.movie-info h1 {
+  margin: 0 0 3px;
+  color: #eeeef0;
+  font-size: 11px;
+}
+
+.movie-info p {
+  margin: 0;
+  color: #696974;
+  font-size: 9px;
+}
+
+.steps {
+  height: 61px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 9px;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.step b {
+  width: 14px;
+  height: 14px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #302a20;
+  color: #9c8662;
+  font-size: 9px;
+}
+
+.step.active {
+  color: #f5a623;
+}
+
+.step.active b {
+  background: #f5a623;
+  color: #15110a;
+}
+
+.step.disabled {
+  color: #35353d;
+}
+
+.step.disabled b {
+  background: #24242b;
+  color: #55555e;
+}
+
+.steps i {
+  width: 25px;
+  height: 1px;
+  background: #292932;
+}
+
+.screen {
+  width: 382px;
+  height: 28px;
+  margin: 0 auto 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px 6px 3px 3px;
+  background: linear-gradient(#292a32, #121219);
+  color: #85858d;
+  font-size: 8px;
+  letter-spacing: 1px;
+  box-shadow: 0 5px 15px #050509;
+}
+
+.seat-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 18px 1fr 18px;
+  align-items: center;
+  gap: 7px;
+}
+
+.row label {
+  color: #646470;
+  font-size: 9px;
+  text-align: center;
+}
+
+.seats {
+  display: flex;
+  gap: 4px;
+}
+
+.seats em {
+  width: 8px;
+  flex: 0 0 8px;
+}
+
+
+.seat-numbers {
+  display: grid;
+  grid-template-columns: 18px repeat(7, 20px) 8px repeat(7, 20px) 18px;
+  gap: 4px;
+  margin-top: 5px;
+  padding: 0 7px;
+  color: #30303b;
+  text-align: center;
+  font-size: 7px;
+}
+
+.seat-numbers small {
+  font-size: 7px;
+}
+
+.legend {
+  height: 38px;
+  margin-top: 30px;
+  padding: 0 184px;
+  display: flex;
+  align-items: center;
+  gap: 19px;
+  border: 1px solid #20202d;
+  border-radius: 9px;
+  background: #14141f;
+  font-size: 9px;
+  white-space: nowrap;
+}
+
+.legend div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-seat {
+  width: 16px;
+  height: 14px;
+  display: inline-block;
+  border-radius: 2px;
+  background: #1d1e38;
+  border: 1px solid #292b4b;
+}
+
+.legend-seat.selected {
+  background: #b17b00;
+  border-color: #e4a614;
+}
+
+.legend-seat.occupied {
+  background: #100e14;
+  border-color: #16131c;
+}
+
+.legend p {
+  margin: 0 0 0 2px;
+  color: #676772;
+}
+
+@media (max-width: 850px) {
+  .navbar {
+    padding: 0 20px;
+    gap: 25px;
+  }
+
+  .navbar nav {
+    gap: 10px;
+  }
+
+  .booking-page {
+    width: min(666px, calc(100% - 30px));
+  }
+
+  .legend {
+    padding: 0 20px;
+  }
+}
+
+/* Base seat styling - requires width & height to be visible */
+.seat {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  margin: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #cbd5e0; /* Fallback default color */
+}
+
+/* Available seat style */
+.seat.available {
+  background-color: #48bb78; /* Green */
+}
+
+/* Occupied seat style */
+.seat.occupied {
+  background-color: #e53e3e; /* Red */
+  cursor: not-allowed;
+}
+
+/* Selected seat style */
+.seat.selected {
+  background-color: #3182ce; /* Blue */
+}
+
+@media (max-width: 600px) {
+  .navbar nav {
+    display: none;
+  }
+
+  .navbar {
+    justify-content: space-between;
+  }
+/*
+  .seat {
+    width: 16px;
+    height: 16px;
+  }
+*/
+/*
+  .seats {
+    gap: 3px;
+  }
+*/
+  .seat-numbers {
+    grid-template-columns: 18px repeat(7, 16px) 8px repeat(7, 16px) 18px;
+    gap: 3px;
+  }
+
+  .legend {
+    gap: 8px;
+    padding: 0 10px;
+    font-size: 8px;
+  }
+
+  .legend p {
+    display: none;
+  }
+}
