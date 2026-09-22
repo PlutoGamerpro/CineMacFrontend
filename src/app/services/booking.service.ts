@@ -29,7 +29,7 @@ export class BookingService {
     CreateBooking(booking: Booking): Observable<Booking> {
         return this.http.post<Booking>(this.CreateBookingApiUrl, booking);
     }
-    GetBookingsByShowtimeId(showtimeId: number): Observable<Booking[]> {
+    GetBookingsByShowtimeId(showtimeId: number | string): Observable<Booking[]> {
         return this.http.get<Booking[]>(`${this.GetBookingsByShowtimeIdApiUrl}/${showtimeId}`);
     }
 }

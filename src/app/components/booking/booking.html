@@ -4,11 +4,18 @@
 
 <main class="booking-page">
   <section class="movie-info">
-     <span class="back">‹ &nbsp; Tilbage</span>
-    <div>
-      <h1>films navn</h1>
-      <p>films dato</p>
-    </div>
+     <span class="back" (click)="GoBack()">‹ &nbsp; Tilbage</span>
+  
+  <div>
+   
+      <div class="booking-item">
+      <h1>Film navn: {{ spilletider?.film?.title }}</h1>
+        <p>StartTid:{{spilletider?.startTime}}</p>
+      </div>
+    
+  </div>
+
+    
   </section>
 
   <div class="steps">
@@ -45,7 +52,7 @@
     <div class="row">
       <label>B</label>
       <div class="seats">
-        @for (seat of rowseats; track seat.id) {
+        @for (seat of rowseats; track seat.nummer) {
           <span 
             class="seat" 
             [class.available]="seat.isAvailable" 

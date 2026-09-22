@@ -308,6 +308,8 @@
   background-color: #3182ce; /* Blue */
 }
 
+
+
 @media (max-width: 600px) {
   .navbar nav {
     display: none;
@@ -331,6 +333,8 @@
     grid-template-columns: 18px repeat(7, 16px) 8px repeat(7, 16px) 18px;
     gap: 3px;
   }
+
+  
 
   .legend {
     gap: 8px;

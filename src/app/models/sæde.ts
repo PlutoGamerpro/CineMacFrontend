@@ -1,6 +1,6 @@
 export interface sæde{
     id: number;
-    række: string;
+    række: string | number;
     nummer: number;
     salId: number;
     // new fileds added

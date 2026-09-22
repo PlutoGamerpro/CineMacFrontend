@@ -3,10 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
-import { BookingService } from '../../services/booking.service';
+
 import { Booking } from '../../models/Booking';
 import { FILM_IMAGES } from '../../images';
 import { sæde } from '../../models/sæde';
+
+import { SpilletidService } from '../../services/spilletid.service';
+import { Spilletid } from '../../models/Spilletid';
 
 @Component({
   selector: 'app-booking',
@@ -17,51 +20,111 @@ import { sæde } from '../../models/sæde';
 })
 export class booking implements OnInit {
 
-  rowseats: sæde[] = [];
+ rowseats: sæde[] = [];
 
   readonly cinemaImages = FILM_IMAGES;
 
   errorMessage = '';
 
-  bookings: Booking[] = [];
+  spilletider: Spilletid | null = null;
 
   isLoading = false;
+  bookings: Booking[] = [];
 
-  showtimeId!: number;
 
   constructor(
-    private bookingService: BookingService,
+    
+    private spilletidService: SpilletidService,
     private changeDetector: ChangeDetectorRef,
     private route: ActivatedRoute
   ) {}
 
-  ngOnInit(): void {
 
-    console.log('Booking component initialized');
+ GetSpilletiderById(id: number | string): void {
+ this.isLoading = true;
+ this.errorMessage = '';
 
-    const showtimeIdParam =
-      this.route.snapshot.paramMap.get('showtimeId')
-      ?? this.route.snapshot.paramMap.get('id');
+ this.spilletidService.GetSpilletider().subscribe({
+   next: (data) => {
+    // loops throw data find found id matches url then return spilletider else return null
+     this.spilletider = data.find(s => s.id === Number(id)) ?? null;
+     
+     
+ 
+     this.isLoading = false;
+     console.log('Spilletider:', this.spilletider);
+     this.changeDetector.markForCheck();
+     
+   }, error: (error) => {
+     console.error('Kunne ikke hente film med ID:', id, error);
+     this.isLoading = false;
+     this.changeDetector.markForCheck();
+   }
+    });
+  
 
-    if (!showtimeIdParam) {
-      this.errorMessage = 'Ingen spilletid blev fundet.';
-      return;
-    }
+}
+     ngOnInit(): void {
+     this.isLoading = true;
+     this.errorMessage = '';
+     this.spilletider = null;
+     // 1. Get the 'id' parameter from the URL (/films/1 -> '1')
 
-    this.showtimeId = Number(showtimeIdParam);
 
-    if (isNaN(this.showtimeId)) {
-      this.errorMessage = 'Ugyldigt showtime ID.';
-      return;
-    }
+     var occupiedSeats = this.bookings.map(b => b.sædeId);
 
-    this.LoadSeats(this.showtimeId);
+      console.log(
+          'Occupied seat IDs:',
+          occupiedSeats
+        );
+
+        this.rowseats =
+          this.generateSeatsLayout(occupiedSeats);
+
+     const id = this.route.snapshot.paramMap.get('id');
+ 
+     // 2. Call your https://localhost:7269 backend endpoint
+     if (id) { 
+       this.GetSpilletiderById(id);  
+      }
+   }
+  generateSeatsLayout(occupiedSeats: number[]): sæde[] {
+    
+    const rows = 14;
+    const seatsPerRow = 20;
+    const layout: sæde[] = [];
+
+    const createrow:  sæde[] = [];
+
+     
+      for(let seat = 1; seat <= seatsPerRow; seat++){
+        const isOccupied = occupiedSeats.includes(seat);
+        createrow.push({
+          række: rows,
+          nummer: seat,
+          isAvailable: !isOccupied,
+          isOccupied: isOccupied,
+          isSelected: false,
+          id: seat,
+          salId: 0
+        });
+      }
+      layout.push(...createrow);
+    
+    return layout;
   }
 
+
+  GoBack(): void {
+    window.history.back();
+  }
+
+/*
   LoadSeats(showtimeId: number): void {
     this.GetBookingsByShowtimeId(showtimeId);
   }
-
+    */
+/*
   GetBookingsByShowtimeId(showtimeId: number): void {
 
     this.isLoading = true;
@@ -75,16 +138,10 @@ export class booking implements OnInit {
 
         console.log('Bookings for showtime:', this.bookings);
 
-        const occupiedSeatIds = this.bookings
-          .map(booking => booking.sædeId);
+       
 
-        console.log(
-          'Occupied seat IDs:',
-          occupiedSeatIds
-        );
 
-        this.rowseats =
-          this.generateSeatsLayout(occupiedSeatIds);
+               
 
         this.isLoading = false;
 
@@ -106,66 +163,27 @@ export class booking implements OnInit {
         // IMPORTANT:
         // Don't show all seats as available if the
         // booking information could not be loaded.
-        this.rowseats = [];
+       
 
         this.changeDetector.detectChanges();
       }
     });
   }
-
+*/
   ClickOnSeat(seat: sæde): void {
 
-    if (seat.isOccupied) {
-      console.log(
-        'Seat is occupied and cannot be selected.'
-      );
-
-      return;
+    if(seat.isAvailable && !seat.isOccupied) {
+      seat.isSelected = !seat.isSelected;
+      console.log(`Seat ${seat.række}${seat.nummer} selected: ${seat.isSelected}`);
     }
-
-    seat.isSelected = !seat.isSelected;
-
-    console.log(
-      'Seat:',
-      seat.id,
-      'Selected:',
-      seat.isSelected
-    );
   }
 
-  private generateSeatsLayout(
-    occupiedSeatIds: number[]
-  ): sæde[] {
+    
 
-    const totalSeatsInRow = 14;
+   
 
-    const generatedSeats: sæde[] = [];
-
-    for (let i = 1; i <= totalSeatsInRow; i++) {
-
-      const isOccupied =
-        occupiedSeatIds.includes(i);
-
-      const newSeat: sæde = {
-
-        id: i,
-
-        nummer: i,
-
-        række: 'C',
-
-        salId: 1,
-
-        isOccupied: isOccupied,
-
-        isAvailable: !isOccupied,
-
-        isSelected: false
-      };
-
-      generatedSeats.push(newSeat);
-    }
-
-    return generatedSeats;
-  }
 }
+  
+
+
+   
