@@ -89,29 +89,31 @@ export class booking implements OnInit {
       }
    }
   generateSeatsLayout(occupiedSeats: number[]): sæde[] {
-    
-    const rows = 14;
+    const rows = 9;
     const seatsPerRow = 20;
     const layout: sæde[] = [];
 
-    const createrow:  sæde[] = [];
-
-     
-      for(let seat = 1; seat <= seatsPerRow; seat++){
-        const isOccupied = occupiedSeats.includes(seat);
-        createrow.push({
-          række: rows,
+    for (let row = 0; row < rows; row++) {
+      for (let seat = 1; seat <= seatsPerRow; seat++) {
+        const id = row * seatsPerRow + seat;
+        const isOccupied = occupiedSeats.includes(id);
+        layout.push({
+          række: String.fromCharCode(65 + row),
           nummer: seat,
           isAvailable: !isOccupied,
           isOccupied: isOccupied,
           isSelected: false,
-          id: seat,
+          id,
           salId: 0
         });
       }
-      layout.push(...createrow);
-    
+    }
+
     return layout;
+  }
+
+  seatsForRow(row: string): sæde[] {
+    return this.rowseats.filter(seat => seat.række === row);
   }
 
 

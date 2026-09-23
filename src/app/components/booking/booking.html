@@ -31,168 +31,25 @@
   <div class="screen">LÆRRED</div>
 
   <section class="seat-layout">
-    <div class="row">
-      <label>A</label>
-
-
- <div class="seats">
-@for (seat of rowseats; track seat.id) {
-  <span
-    class="seat"
-    [class.selected]="seat.isSelected"
-    (click)="ClickOnSeat(seat)"
-  >
-    {{ seat.id }}
-  </span>
-}
-</div>
-      <label>A</label>
-    </div>
-
-    <div class="row">
-      <label>B</label>
-      <div class="seats">
-        @for (seat of rowseats; track seat.nummer) {
-          <span 
-            class="seat" 
-            [class.available]="seat.isAvailable" 
-            [class.occupied]="seat.isOccupied"
-            [class.selected]="seat.isSelected"
-            (click)="ClickOnSeat(seat)"
-            role="button"
-            tabindex="0"
-          ></span>
-        }
-      
-
-
+    @for (row of ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']; track row) {
+      <div class="row">
+        <label>{{ row }}</label>
+        <div class="seats">
+          @for (seat of seatsForRow(row); track seat.id) {
+            <span
+              class="seat"
+              [class.available]="seat.isAvailable && !seat.isSelected"
+              [class.occupied]="seat.isOccupied"
+              [class.selected]="seat.isSelected"
+              (click)="ClickOnSeat(seat)"
+              role="button"
+              tabindex="0"
+            ></span>
+          }
+        </div>
+        <label>{{ row }}</label>
       </div>
-      <label>B</label>
-    </div>
-
-    <div class="row">
-  <label>C</label>
-
-<div class="seats">
-  @for (seat of rowseats; track seat.id) {
-    <span 
-      class="seat"
-      [class.available]="seat.isAvailable && !seat.isSelected" 
-      [class.occupied]="seat.isOccupied"
-      [class.selected]="seat.isSelected"
-      (click)="ClickOnSeat(seat)"
-      role="button"
-      tabindex="0"
-    ></span>
-  }
-</div>
-  <label>C</label>
-</div>
-
-    <div class="row">
-      <label>D</label>
-     
-<div class="seats">
-  @for (seat of rowseats; track seat.id) {
-    <span 
-      class="seat"
-      [class.available]="seat.isAvailable && !seat.isSelected" 
-      [class.occupied]="seat.isOccupied"
-      [class.selected]="seat.isSelected"
-      (click)="ClickOnSeat(seat)"
-      role="button"
-      tabindex="0"
-    ></span>
-  }
-</div>
-      <label>D</label>
-    </div>
-
-    <div class="row">
-      <label>E</label>
-     
-<div class="seats">
-  @for (seat of rowseats; track seat.id) {
-    <span 
-      class="seat"
-      [class.available]="seat.isAvailable && !seat.isSelected" 
-      [class.occupied]="seat.isOccupied"
-      [class.selected]="seat.isSelected"
-      (click)="ClickOnSeat(seat)"
-      role="button"
-      tabindex="0"
-    ></span>
-  }
-</div>
-      <label>E</label>
-    </div>
-
-    <div class="row">
-      <label>F</label>
-     
-<div class="seats">
-  @for (seat of rowseats; track seat.id) {
-    <span 
-      class="seat"
-      [class.available]="seat.isAvailable && !seat.isSelected" 
-      [class.occupied]="seat.isOccupied"
-      [class.selected]="seat.isSelected"
-      (click)="ClickOnSeat(seat)"
-      role="button"
-      tabindex="0"
-    ></span>
-  }
-</div>
-      <label>F</label>
-    </div>
-
-    <div class="row">
-      <label>G</label>
-     
-<div class="seats">
-  @for (seat of rowseats; track seat.id) {
-    <span 
-      class="seat"
-      [class.available]="seat.isAvailable && !seat.isSelected" 
-      [class.occupied]="seat.isOccupied"
-      [class.selected]="seat.isSelected"
-      (click)="ClickOnSeat(seat)"
-      role="button"
-      tabindex="0"
-    ></span>
-  }
-</div>
-      <label>G</label>
-    </div>
-
-    <div class="row">
-      <label>H</label>
-    
-<div class="seats">
-  @for (seat of rowseats; track seat.id) {
-    <span 
-      class="seat"
-      [class.available]="seat.isAvailable && !seat.isSelected" 
-      [class.occupied]="seat.isOccupied"
-      [class.selected]="seat.isSelected"
-      (click)="ClickOnSeat(seat)"
-      role="button"
-      tabindex="0"
-    ></span>
-  }
-</div>
-      <label>H</label>
-    </div>
-
-    <div class="row">
-      <label>I</label>
-      <div class="seats">
-        <span class="seat available"></span><span class="seat available"></span><span class="seat available"></span><span class="seat available"></span><span class="seat available"></span><span class="seat available"></span>
-        <em></em>
-        <span class="seat available"></span><span class="seat available"></span><span class="seat available"></span><span class="seat available"></span><span class="seat available"></span><span class="seat available"></span><span class="seat available"></span><span class="seat available"></span>
-      </div>
-      <label>I</label>
-    </div>
+    }
   </section>
 
   <div class="seat-numbers">
