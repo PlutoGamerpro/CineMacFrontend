@@ -262,6 +262,188 @@
   color: #676772;
 }
 
+.selection-summary {
+  position: fixed;
+  z-index: 10;
+  left: 50%;
+  bottom: 24px;
+  width: min(666px, calc(100% - 30px));
+  margin: 0;
+  padding: 14px 20px;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 32px;
+  border: 1px solid #614719;
+  border-radius: 12px;
+  background: #1b1613;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  transform: translateX(-50%);
+}
+
+.selection-summary span,
+.confirmation-details span,
+.price-details span,
+.film-summary p {
+  display: block;
+  color: #85818d;
+  font-size: 10px;
+}
+
+.selection-summary strong {
+  display: block;
+  margin-top: 5px;
+  color: #f5a623;
+  font-size: 14px;
+}
+
+.summary-price strong {
+  color: #f0f0f3;
+}
+
+.selection-summary button,
+.confirm-button {
+  border: 0;
+  border-radius: 8px;
+  padding: 14px 22px;
+  background: #f5a623;
+  color: #111016;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.selection-summary button span {
+  display: inline;
+  color: inherit;
+  font-size: 16px;
+}
+
+.confirmation-page {
+  width: min(648px, 100%);
+  margin: 6px auto 34px;
+}
+
+.confirmation-page > h1 {
+  margin: 0 0 26px;
+  color: #f3f2f6;
+  font-size: 26px;
+}
+
+.confirmation-card {
+  border: 1px solid #292937;
+  border-radius: 17px;
+  background: #171721;
+  overflow: hidden;
+}
+
+.film-summary {
+  min-height: 153px;
+  padding: 22px;
+  display: flex;
+  align-items: flex-start;
+  gap: 17px;
+}
+
+.film-summary img {
+  width: 72px;
+  height: 105px;
+  border-radius: 7px;
+  object-fit: cover;
+}
+
+.film-summary h2 {
+  margin: 2px 0 8px;
+  color: #f6f5f7;
+  font-size: 18px;
+}
+
+.genre-tags {
+  display: flex;
+  gap: 8px;
+}
+
+.genre-tags span {
+  padding: 4px 9px;
+  border-radius: 4px;
+  background: #30261b;
+  color: #f5a623;
+  font-size: 11px;
+}
+
+.film-summary p {
+  margin: 8px 0 0;
+}
+
+.confirmation-details,
+.price-details {
+  padding: 20px 22px;
+  border-top: 1px solid #292937;
+}
+
+.confirmation-details div,
+.price-details div {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 0 0 14px;
+}
+
+.confirmation-details div:last-child,
+.price-details div:last-child {
+  margin-bottom: 0;
+}
+
+.confirmation-details strong,
+.price-details strong {
+  color: #f5f3f6;
+  font-size: 13px;
+  text-align: right;
+}
+
+.price-details .total {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #30303d;
+}
+
+.price-details .total span,
+.price-details .total strong {
+  color: #f5a623;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.confirmation-note {
+  margin: 26px 0;
+  color: #777583;
+  font-size: 13px;
+  text-align: center;
+}
+
+.confirm-button {
+  width: 100%;
+  padding: 19px;
+  font-size: 16px;
+}
+
+.confirmed-message {
+  padding: 19px;
+  border-radius: 8px;
+  background: #263c2a;
+  color: #a9e2ae;
+  font-weight: 700;
+  text-align: center;
+}
+
+.change-seat-button {
+  display: block;
+  margin: 15px auto 0;
+  border: 0;
+  background: transparent;
+  color: #888893;
+  cursor: pointer;
+}
+
 @media (max-width: 850px) {
   .navbar {
     padding: 0 20px;
@@ -344,5 +526,19 @@
 
   .legend p {
     display: none;
+  }
+
+  .selection-summary {
+    grid-template-columns: 1fr auto;
+    gap: 14px;
+  }
+
+  .selection-summary button {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .confirmation-page > h1 {
+    font-size: 22px;
   }
 }

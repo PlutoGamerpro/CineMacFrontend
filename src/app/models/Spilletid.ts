@@ -1,4 +1,5 @@
 import { Film } from "./film";
+import { sal } from "./sal";
 
 export interface Spilletid {
     id: number;
@@ -6,4 +7,5 @@ export interface Spilletid {
     filmId: number;
     salId: number;
     film?: Film;
+    sal?: sal
 }

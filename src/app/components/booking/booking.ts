@@ -10,6 +10,7 @@ import { sæde } from '../../models/sæde';
 
 import { SpilletidService } from '../../services/spilletid.service';
 import { Spilletid } from '../../models/Spilletid';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-booking',
@@ -25,11 +26,17 @@ export class booking implements OnInit {
   readonly cinemaImages = FILM_IMAGES;
 
   errorMessage = '';
+  SelectedSeats: sæde[] = [];
 
   spilletider: Spilletid | null = null;
 
   isLoading = false;
   bookings: Booking[] = [];
+  showConfirmation = false;
+  bookingConfirmed = false;
+
+  readonly ticketPrice = 125;
+  readonly bookingFee = 15;
 
 
   constructor(
@@ -88,33 +95,36 @@ export class booking implements OnInit {
        this.GetSpilletiderById(id);  
       }
    }
-  generateSeatsLayout(occupiedSeats: number[]): sæde[] {
-    const rows = 9;
-    const seatsPerRow = 20;
-    const layout: sæde[] = [];
+ generateSeatsLayout(occupiedSeats: number[]): sæde[]{
+  const rows =  14;
+  const seatsPerRow = 20;
+  const Layount: sæde[] = []
+   
 
-    for (let row = 0; row < rows; row++) {
-      for (let seat = 1; seat <= seatsPerRow; seat++) {
-        const id = row * seatsPerRow + seat;
-        const isOccupied = occupiedSeats.includes(id);
-        layout.push({
-          række: String.fromCharCode(65 + row),
-          nummer: seat,
-          isAvailable: !isOccupied,
-          isOccupied: isOccupied,
-          isSelected: false,
-          id,
-          salId: 0
-        });
-      }
+  for(let row = 0; row <= rows; row++){
+    for(let seat = 1; seat <= seatsPerRow; seat++){
+      const SeatId = row * seatsPerRow + seat;
+      const IsOccupied = occupiedSeats.includes(SeatId);
+
+      Layount.push({
+        rokke: String.fromCharCode(65 + row),
+        nummer: SeatId,
+        isAvailable: !IsOccupied,
+        isOccupied: IsOccupied,
+        isSelected: false,
+        salId: 0,
+        id: SeatId,
+      });
+
     }
-
-    return layout;
   }
+  return Layount;
+ }
+ seatsForRow(row: string): sæde[]{
+  return this.rowseats.filter(seat => seat.rokke === row);
+ }
 
-  seatsForRow(row: string): sæde[] {
-    return this.rowseats.filter(seat => seat.række === row);
-  }
+  
 
 
   GoBack(): void {
@@ -172,12 +182,64 @@ export class booking implements OnInit {
     });
   }
 */
+
+
+
   ClickOnSeat(seat: sæde): void {
 
-    if(seat.isAvailable && !seat.isOccupied) {
+    if(seat.isAvailable && !seat.isOccupied){
       seat.isSelected = !seat.isSelected;
-      console.log(`Seat ${seat.række}${seat.nummer} selected: ${seat.isSelected}`);
+      
+      if(seat.isSelected && !this.SelectedSeats.includes(seat)){
+        
+        this.SelectedSeats.push(seat)
+      }
+      else{  
+        this.SelectedSeats = this.SelectedSeats.filter(s => s !== seat );
     }
+     
+     console.log(this.SelectedSeats);
+      /*
+      seat.isSelected = seat.isAvailable = false;
+        this.SelectedSeats.push(seat)
+        console.log(`Seat ${seat.række}${seat.nummer} selected: ${seat.isSelected}`);
+      }
+      else{
+      seat.isSelected = !seat.isSelected;
+      this.SelectedSeats.pop();
+      console.log(this.SelectedSeats.pop())
+      }
+      */
+      console.log(`Seat ${seat.rokke}${seat.nummer} selected: ${seat.isSelected}`);
+    }
+  }
+
+  get selectedSeatLabel(): string {
+    return this.SelectedSeats
+      .map(seat => `Række ${seat.rokke}, Sæde ${seat.nummer}`)
+      .join(', ');
+  }
+
+  get ticketTotal(): number {
+    return this.SelectedSeats.length * this.ticketPrice;
+  }
+
+  get bookingTotal(): number {
+    return this.ticketTotal + this.bookingFee;
+  }
+
+  ContinueToBooking(): void {
+    if (this.SelectedSeats.length > 0) {
+      this.showConfirmation = true;
+    }
+  }
+
+  BackToSeats(): void {
+    this.showConfirmation = false;
+  }
+
+  ConfirmBooking(): void {
+    this.bookingConfirmed = true;
   }
 
     

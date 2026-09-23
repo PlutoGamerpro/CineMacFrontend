@@ -9,8 +9,11 @@
   <div>
    
       <div class="booking-item">
-      <h1>Film navn: {{ spilletider?.film?.title }}</h1>
-        <p>StartTid:{{spilletider?.startTime}}</p>
+      <h2>{{ spilletider?.film?.title }}</h2> 
+        <h1> {{spilletider?.startTime | date:'d. MMM HH:mm'}} · {{spilletider?.sal?.navn}} · 2D</h1>
+
+      
+        
       </div>
     
   </div>
@@ -23,47 +26,96 @@
     <i></i>
     <div class="step completed"><b>✓</b> Spilletid</div>
     <i></i>
-    <div class="step active"><b>3</b> Sæde</div>
+    <div class="step" [class.active]="!showConfirmation" [class.completed]="showConfirmation"><b>{{ showConfirmation ? '✓' : '3' }}</b> Sæde</div>
     <i></i>
-    <div class="step disabled"><b>4</b> Betaling</div>
+    <div class="step" [class.active]="showConfirmation" [class.disabled]="!showConfirmation"><b>4</b> Betaling</div>
   </div>
 
-  <div class="screen">LÆRRED</div>
+  @if (!showConfirmation) {
+    <div class="screen">LÆRRED</div>
 
-  <section class="seat-layout">
-    @for (row of ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']; track row) {
-      <div class="row">
-        <label>{{ row }}</label>
-        <div class="seats">
-          @for (seat of seatsForRow(row); track seat.id) {
-            <span
-              class="seat"
-              [class.available]="seat.isAvailable && !seat.isSelected"
-              [class.occupied]="seat.isOccupied"
-              [class.selected]="seat.isSelected"
-              (click)="ClickOnSeat(seat)"
-              role="button"
-              tabindex="0"
-            ></span>
-          }
+    <section class="seat-layout">
+      @for (row of ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']; track row) {
+        <div class="row">
+          <label>{{ row }}</label>
+          <div class="seats">
+            @for (seat of seatsForRow(row); track seat.id) {
+              <span
+                class="seat"
+                [class.available]="seat.isAvailable && !seat.isSelected"
+                [class.occupied]="seat.isOccupied"
+                [class.selected]="seat.isSelected"
+                (click)="ClickOnSeat(seat)"
+                role="button"
+                tabindex="0"
+              ></span>
+            }
+          </div>
+          <label>{{ row }}</label>
         </div>
-        <label>{{ row }}</label>
-      </div>
+      }
+    </section>
+
+    <div class="seat-numbers">
+      <span></span>
+      <small>1</small><small>2</small><small>3</small><small>4</small><small>5</small><small>6</small><small>7</small>
+      <span></span>
+      <small>8</small><small>9</small><small>10</small><small>11</small><small>12</small><small>13</small><small>14</small>
+      <span></span>
+    </div>
+
+    <footer class="legend">
+      <div><span class="legend-seat available"></span> Ledig</div>
+      <div><span class="legend-seat selected"></span> Valgt</div>
+      <div><span class="legend-seat occupied"></span> Optaget</div>
+      <p>104 ledige af 126 sæder</p>
+    </footer>
+
+    @if (SelectedSeats.length > 0) {
+      <section class="selection-summary">
+        <div>
+          <span>Valgt sæde</span>
+          <strong>{{ selectedSeatLabel }}</strong>
+        </div>
+        <div class="summary-price">
+          <span>Pris</span>
+          <strong>{{ ticketTotal }} kr</strong>
+        </div>
+        <button type="button" (click)="ContinueToBooking()">Gå til booking <span aria-hidden="true">→</span></button>
+      </section>
     }
-  </section>
-
-  <div class="seat-numbers">
-    <span></span>
-    <small>1</small><small>2</small><small>3</small><small>4</small><small>5</small><small>6</small><small>7</small>
-    <span></span>
-    <small>8</small><small>9</small><small>10</small><small>11</small><small>12</small><small>13</small><small>14</small>
-    <span></span>
-  </div>
-
-  <footer class="legend">
-    <div><span class="legend-seat available"></span> Ledig</div>
-    <div><span class="legend-seat selected"></span> Valgt</div>
-    <div><span class="legend-seat occupied"></span> Optaget</div>
-    <p>104 ledige af 126 sæder</p>
-  </footer>
+  } @else {
+    <section class="confirmation-page">
+      <h1>Bekræft din booking</h1>
+      <article class="confirmation-card">
+        <div class="film-summary">
+          <img [src]="spilletider?.film?.billedeturl || cinemaImages.shadowGuardian" [alt]="spilletider?.film?.title || 'Film'">
+          <div>
+            <h2>{{ spilletider?.film?.title }}</h2>
+            <div class="genre-tags"><span>{{ spilletider?.film?.genre || 'Film' }}</span><span>2D</span></div>
+            <p>{{ spilletider?.film?.varighed || 0 }} min</p>
+          </div>
+        </div>
+        <div class="confirmation-details">
+          <div><span>Dato</span><strong>{{ spilletider?.startTime | date:'EEEE d. MMM' }}</strong></div>
+          <div><span>Tidspunkt</span><strong>{{ spilletider?.startTime | date:'HH:mm' }}</strong></div>
+          <div><span>Sal</span><strong>{{ spilletider?.sal?.navn }}</strong></div>
+          <div><span>Format</span><strong>2D</strong></div>
+          <div><span>Sæde</span><strong>{{ selectedSeatLabel }}</strong></div>
+        </div>
+        <div class="price-details">
+          <div><span>Billet (2D)</span><strong>{{ ticketTotal }} kr</strong></div>
+          <div><span>Gebyr</span><strong>{{ bookingFee }} kr</strong></div>
+          <div class="total"><span>I alt</span><strong>{{ bookingTotal }} kr</strong></div>
+        </div>
+      </article>
+      <p class="confirmation-note">Din billet sendes til din e-mail og kan scannes i entréen.</p>
+      @if (!bookingConfirmed) {
+        <button class="confirm-button" type="button" (click)="ConfirmBooking()">Bekræft booking — {{ bookingTotal }} kr</button>
+      } @else {
+        <div class="confirmed-message">Booking bekræftet. Tak for dit køb!</div>
+      }
+      <button class="change-seat-button" type="button" (click)="BackToSeats()">← Vælg et andet sæde</button>
+    </section>
+  }
 </main>

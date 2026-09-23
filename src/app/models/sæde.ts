@@ -1,6 +1,8 @@
+
+
 export interface sæde{
     id: number;
-    række: string | number;
+    rokke: string | number;
     nummer: number;
     salId: number;
     // new fileds added
@@ -8,4 +10,5 @@ export interface sæde{
     isAvailable: boolean;
     isOccupied: boolean;
     isSelected?: boolean;
+    
 }
