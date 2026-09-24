@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, shareReplay } from 'rxjs';
 import { Booking } from '../models/Booking';
+import { sæde } from '../models/sæde';
 
 export interface BookingEntry {
     id: number,
@@ -10,6 +11,8 @@ export interface BookingEntry {
     SpilletidId: number,
     SædeId: number,
     BookingTispunkt: Date;
+    totalSeats: sæde[];       // All seats in the hall
+  occupiedSeatIds: number[]; // IDs of seats already booked
 }
 
 @Injectable({
@@ -32,4 +35,6 @@ export class BookingService {
     GetBookingsByShowtimeId(showtimeId: number | string): Observable<Booking[]> {
         return this.http.get<Booking[]>(`${this.GetBookingsByShowtimeIdApiUrl}/${showtimeId}`);
     }
+    
+
 }

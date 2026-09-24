@@ -1,24 +1,13 @@
-
-
-  
-
 <main class="booking-page">
   <section class="movie-info">
-     <span class="back" (click)="GoBack()">‹ &nbsp; Tilbage</span>
-  
-  <div>
-   
+    <span class="back" (click)="GoBack()">‹ &nbsp; Tilbage</span>
+
+    <div>
       <div class="booking-item">
-      <h2>{{ spilletider?.film?.title }}</h2> 
-        <h1> {{spilletider?.startTime | date:'d. MMM HH:mm'}} · {{spilletider?.sal?.navn}} · 2D</h1>
-
-      
-        
+        <h2>{{ spilletider?.film?.title }}</h2>
+        <h1>{{ spilletider?.startTime | date:'d. MMM HH:mm' }} · {{ spilletider?.sal?.navn }} · 2D</h1>
       </div>
-    
-  </div>
-
-    
+    </div>
   </section>
 
   <div class="steps">
@@ -26,9 +15,13 @@
     <i></i>
     <div class="step completed"><b>✓</b> Spilletid</div>
     <i></i>
-    <div class="step" [class.active]="!showConfirmation" [class.completed]="showConfirmation"><b>{{ showConfirmation ? '✓' : '3' }}</b> Sæde</div>
+    <div class="step" [class.active]="!showConfirmation" [class.completed]="showConfirmation">
+      <b>{{ showConfirmation ? '✓' : '3' }}</b> Sæde
+    </div>
     <i></i>
-    <div class="step" [class.active]="showConfirmation" [class.disabled]="!showConfirmation"><b>4</b> Betaling</div>
+    <div class="step" [class.active]="showConfirmation" [class.disabled]="!showConfirmation">
+      <b>4</b> Betaling
+    </div>
   </div>
 
   @if (!showConfirmation) {
@@ -39,17 +32,16 @@
         <div class="row">
           <label>{{ row }}</label>
           <div class="seats">
-            @for (seat of seatsForRow(row); track seat.id) {
-              <span
-                class="seat"
-                [class.available]="seat.isAvailable && !seat.isSelected"
-                [class.occupied]="seat.isOccupied"
-                [class.selected]="seat.isSelected"
-                (click)="ClickOnSeat(seat)"
-                role="button"
-                tabindex="0"
-              ></span>
-            }
+           @for (seat of seatsForRow(row); track seat.id) {
+  <span
+    class="seat"
+    [class.available]="seat.isAvailable && !seat.isSelected && !isOccupied(seat.id)"
+    [class.occupied]="isOccupied(seat.id) || seat.isOccupied"
+    [class.selected]="seat.isSelected"
+    (click)="!isOccupied(seat.id) && ClickOnSeat(seat)"
+    role="button"
+  ></span>
+}
           </div>
           <label>{{ row }}</label>
         </div>
@@ -79,9 +71,11 @@
         </div>
         <div class="summary-price">
           <span>Pris</span>
-          <strong>{{BookingTotal}} kr</strong>
+          <strong>{{ BookingTotal }} kr</strong>
         </div>
-        <button type="button" (click)="ContinueBooking()" >Gå til booking  <span aria-hidden="true">→</span></button>
+        <button type="button" (click)="ContinueBooking()">
+          Gå til booking &nbsp;<span aria-hidden="true">→</span>
+        </button>
       </section>
     }
   } @else {
@@ -89,26 +83,35 @@
       <h1>Bekræft din booking</h1>
       <article class="confirmation-card">
         <div class="film-summary">
-          <img [src]="spilletider?.film?.billedeturl || cinemaImages.shadowGuardian" [alt]="spilletider?.film?.title || 'Film'">
+          <img
+            [src]="spilletider?.film?.billedeturl || cinemaImages.shadowGuardian"
+            [alt]="spilletider?.film?.title || 'Film'"
+          >
           <div>
-            <h2>{{spilletider?.film?.title}}</h2>
-            <div class="genre-tags"><span>{{spilletider?.film?.genre}}</span><span>2D</span></div>
-            <p>{{spilletider?.film?.varighed}} min</p>
+            <h2>{{ spilletider?.film?.title }}</h2>
+            <div class="genre-tags">
+              <span>{{ spilletider?.film?.genre }}</span>
+              <span>2D</span>
+            </div>
+            <p>{{ spilletider?.film?.varighed }} min</p>
           </div>
         </div>
+
         <div class="confirmation-details">
-          <div><span>Dato</span><strong>{{spilletider?.startTime | date:'EEEE d. MMM' }}</strong></div>
-          <div><span>Tidspunkt</span><strong>{{ spilletider?.startTime | date:'HH:mm'}} </strong></div>
-          <div><span>Sal</span><strong>{{spilletider?.sal?.navn}}</strong></div>
+          <div><span>Dato</span><strong>{{ spilletider?.startTime | date:'EEEE d. MMM' }}</strong></div>
+          <div><span>Tidspunkt</span><strong>{{ spilletider?.startTime | date:'HH:mm' }}</strong></div>
+          <div><span>Sal</span><strong>{{ spilletider?.sal?.navn }}</strong></div>
           <div><span>Format</span><strong>2D</strong></div>
-          <div><span>Sæde</span><strong>{{SelectedSeatLabel}}</strong></div>
+          <div><span>Sæde</span><strong>{{ SelectedSeatLabel }}</strong></div>
         </div>
+
         <div class="price-details">
-          <div><span>Billet (2D)</span><strong>{{ticketprice}} kr</strong></div>
-          <div><span>Gebyr</span><strong>{{bookinggebyr}} kr</strong></div>
-          <div class="total"><span>I alt</span><strong>{{BookingTotal}} kr</strong></div>
+          <div><span>Billet (2D)</span><strong>{{ ticketprice }} kr</strong></div>
+          <div><span>Gebyr</span><strong>{{ bookinggebyr }} kr</strong></div>
+          <div class="total"><span>I alt</span><strong>{{ BookingTotal }} kr</strong></div>
         </div>
       </article>
+
       <div class="customer-fields">
         <label>
           Navn
@@ -119,13 +122,20 @@
           <input type="email" name="customerEmail" [(ngModel)]="customerEmail" required email autocomplete="email">
         </label>
       </div>
+
       <p class="confirmation-note">Din billet sendes til din e-mail og kan scannes i entréen.</p>
+
       @if (!bookingConfirmed) {
-        <button class="confirm-button" type="submit" [disabled]="bookingForm.invalid">Bekræft booking — {{BookingTotal}} kr</button>
+        <button class="confirm-button" type="submit" [disabled]="bookingForm.invalid">
+          Bekræft booking — {{ BookingTotal }} kr
+        </button>
       } @else {
         <div class="confirmed-message">Booking bekræftet. Tak for dit køb!</div>
       }
-      <button class="change-seat-button" type="button" (click)="ChooseOtherSeat()" >← Vælg et andet sæde</button>
+
+      <button class="change-seat-button" type="button" (click)="ChooseOtherSeat()">
+        ← Vælg et andet sæde
+      </button>
     </form>
   }
 </main>
