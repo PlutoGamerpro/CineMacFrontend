@@ -75,13 +75,13 @@
       <section class="selection-summary">
         <div>
           <span>Valgt sæde</span>
-          <strong>{{ selectedSeatLabel }}</strong>
+          <strong>{{ SelectedSeatLabel }}</strong>
         </div>
         <div class="summary-price">
           <span>Pris</span>
-          <strong>{{ ticketTotal }} kr</strong>
+          <strong>{{BookingTotal}} kr</strong>
         </div>
-        <button type="button" (click)="ContinueToBooking()">Gå til booking <span aria-hidden="true">→</span></button>
+        <button type="button" (click)="ContinueBooking()" >Gå til booking  <span aria-hidden="true">→</span></button>
       </section>
     }
   } @else {
@@ -91,31 +91,31 @@
         <div class="film-summary">
           <img [src]="spilletider?.film?.billedeturl || cinemaImages.shadowGuardian" [alt]="spilletider?.film?.title || 'Film'">
           <div>
-            <h2>{{ spilletider?.film?.title }}</h2>
-            <div class="genre-tags"><span>{{ spilletider?.film?.genre || 'Film' }}</span><span>2D</span></div>
-            <p>{{ spilletider?.film?.varighed || 0 }} min</p>
+            <h2>{{spilletider?.film?.title}}</h2>
+            <div class="genre-tags"><span>{{spilletider?.film?.genre}}</span><span>2D</span></div>
+            <p>{{spilletider?.film?.varighed}} min</p>
           </div>
         </div>
         <div class="confirmation-details">
-          <div><span>Dato</span><strong>{{ spilletider?.startTime | date:'EEEE d. MMM' }}</strong></div>
-          <div><span>Tidspunkt</span><strong>{{ spilletider?.startTime | date:'HH:mm' }}</strong></div>
-          <div><span>Sal</span><strong>{{ spilletider?.sal?.navn }}</strong></div>
+          <div><span>Dato</span><strong>{{spilletider?.startTime | date:'EEEE d. MMM' }}</strong></div>
+          <div><span>Tidspunkt</span><strong>{{ spilletider?.startTime | date:'HH:mm'}} </strong></div>
+          <div><span>Sal</span><strong>{{spilletider?.sal?.navn}}</strong></div>
           <div><span>Format</span><strong>2D</strong></div>
-          <div><span>Sæde</span><strong>{{ selectedSeatLabel }}</strong></div>
+          <div><span>Sæde</span><strong>{{SelectedSeatLabel}}</strong></div>
         </div>
         <div class="price-details">
-          <div><span>Billet (2D)</span><strong>{{ ticketTotal }} kr</strong></div>
-          <div><span>Gebyr</span><strong>{{ bookingFee }} kr</strong></div>
-          <div class="total"><span>I alt</span><strong>{{ bookingTotal }} kr</strong></div>
+          <div><span>Billet (2D)</span><strong>{{ticketprice}} kr</strong></div>
+          <div><span>Gebyr</span><strong>{{bookinggebyr}} kr</strong></div>
+          <div class="total"><span>I alt</span><strong>{{BookingTotal}} kr</strong></div>
         </div>
       </article>
       <p class="confirmation-note">Din billet sendes til din e-mail og kan scannes i entréen.</p>
       @if (!bookingConfirmed) {
-        <button class="confirm-button" type="button" (click)="ConfirmBooking()">Bekræft booking — {{ bookingTotal }} kr</button>
+        <button class="confirm-button" type="button" (click)="ConfirmBooking()"  >Bekræft booking —  kr</button>
       } @else {
         <div class="confirmed-message">Booking bekræftet. Tak for dit køb!</div>
       }
-      <button class="change-seat-button" type="button" (click)="BackToSeats()">← Vælg et andet sæde</button>
+      <button class="change-seat-button" type="button" (click)="ChooseOtherSeat()" >← Vælg et andet sæde</button>
     </section>
   }
 </main>

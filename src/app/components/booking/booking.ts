@@ -30,13 +30,16 @@ export class booking implements OnInit {
 
   spilletider: Spilletid | null = null;
 
+  readonly bookinggebyr = 50;
+  readonly ticketprice = 125;
+   totalprice = 0;
+
   isLoading = false;
   bookings: Booking[] = [];
   showConfirmation = false;
   bookingConfirmed = false;
 
-  readonly ticketPrice = 125;
-  readonly bookingFee = 15;
+
 
 
   constructor(
@@ -214,35 +217,40 @@ export class booking implements OnInit {
     }
   }
 
-  get selectedSeatLabel(): string {
-    return this.SelectedSeats
-      .map(seat => `Række ${seat.rokke}, Sæde ${seat.nummer}`)
-      .join(', ');
-  }
 
-  get ticketTotal(): number {
-    return this.SelectedSeats.length * this.ticketPrice;
-  }
-
-  get bookingTotal(): number {
-    return this.ticketTotal + this.bookingFee;
-  }
-
-  ContinueToBooking(): void {
-    if (this.SelectedSeats.length > 0) {
+  ContinueBooking(): void {
+    if(this.SelectedSeats.length > 0){
       this.showConfirmation = true;
     }
   }
-
-  BackToSeats(): void {
+  ChooseOtherSeat(): void {
     this.showConfirmation = false;
-  }
-
-  ConfirmBooking(): void {
-    this.bookingConfirmed = true;
-  }
-
     
+  }
+  // map mean you convert an array to a string 
+  // example [a,12,b,20] => 'a', '12',  'b', '20  ( if not join then it still has [])
+get SelectedSeatLabel(): string { 
+  return this.SelectedSeats.map(seat => `Række ${seat.rokke}, Sæde ${seat.nummer}`)
+  .join(', ');
+}
+
+get TicketPrice(): number {
+  return this.totalprice = (this.BookingTotal) * this.SelectedSeats.length;
+}
+
+get BookingTotal(): number {
+
+  return this.totalprice =  (this.ticketprice + this.bookinggebyr) * this.SelectedSeats.length;
+
+}
+
+
+
+ConfirmBooking(): void{
+ this.bookingConfirmed = true;
+}
+
+
 
    
 
