@@ -232,23 +232,25 @@ get BookingTotal(): number {
 
 
 ConfirmBooking(): void {
-  if (!this.spilletider?.id || !this.customerName.trim() || !this.customerEmail.trim() || this.SelectedSeats.length === 0) {
-    return;
-  }
+ const spilletidId = this.spilletider?.id;
 
-  this.SelectedSeats.forEach(seat => {
-    this.CreateBooking({
-      id: 0,
-      navn: this.customerName.trim(),
-      email: this.customerEmail.trim(),
-      spilletidId: this.spilletider!.id,
-      sædeId: seat.id,
-      BookingTispunkt: new Date(),
-    });
+ if (spilletidId == null || this.SelectedSeats.length === 0 || !this.customerName.trim() || !this.customerEmail.trim()) {
+  return;
+ }
+
+ this.SelectedSeats.forEach(seat => {
+  this.CreateBooking({
+    id: 0,
+    navn: this.customerName,
+    email: this.customerEmail,
+    sædeId: seat.id,
+    BookingTispunkt: new Date(),
+    spilletidId,
   });
-
+});
   this.bookingConfirmed = true;
 }
+
 
 
 
