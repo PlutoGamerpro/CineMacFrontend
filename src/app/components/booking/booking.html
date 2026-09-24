@@ -85,7 +85,7 @@
       </section>
     }
   } @else {
-    <section class="confirmation-page">
+    <form class="confirmation-page" #bookingForm="ngForm" (ngSubmit)="ConfirmBooking()" novalidate>
       <h1>Bekræft din booking</h1>
       <article class="confirmation-card">
         <div class="film-summary">
@@ -109,13 +109,23 @@
           <div class="total"><span>I alt</span><strong>{{BookingTotal}} kr</strong></div>
         </div>
       </article>
+      <div class="customer-fields">
+        <label>
+          Navn
+          <input type="text" name="customerName" [(ngModel)]="customerName" required autocomplete="name">
+        </label>
+        <label>
+          E-mail
+          <input type="email" name="customerEmail" [(ngModel)]="customerEmail" required email autocomplete="email">
+        </label>
+      </div>
       <p class="confirmation-note">Din billet sendes til din e-mail og kan scannes i entréen.</p>
       @if (!bookingConfirmed) {
-        <button class="confirm-button" type="button" (click)="ConfirmBooking()"  >Bekræft booking —  kr</button>
+        <button class="confirm-button" type="submit" [disabled]="bookingForm.invalid">Bekræft booking — {{BookingTotal}} kr</button>
       } @else {
         <div class="confirmed-message">Booking bekræftet. Tak for dit køb!</div>
       }
       <button class="change-seat-button" type="button" (click)="ChooseOtherSeat()" >← Vælg et andet sæde</button>
-    </section>
+    </form>
   }
 </main>

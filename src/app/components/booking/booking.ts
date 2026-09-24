@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Booking } from '../../models/Booking';
 import { FILM_IMAGES } from '../../images';
 import { sæde } from '../../models/sæde';
-
+import { BookingService } from '../../services/booking.service';
 import { SpilletidService } from '../../services/spilletid.service';
 import { Spilletid } from '../../models/Spilletid';
 import { map } from 'rxjs';
@@ -36,8 +36,12 @@ export class booking implements OnInit {
 
   isLoading = false;
   bookings: Booking[] = [];
+  bookingt: Booking | null = null;
+
   showConfirmation = false;
   bookingConfirmed = false;
+  customerName = '';
+  customerEmail = '';
 
 
 
@@ -46,7 +50,8 @@ export class booking implements OnInit {
     
     private spilletidService: SpilletidService,
     private changeDetector: ChangeDetectorRef,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private bookingservice: BookingService
   ) {}
 
 
@@ -106,7 +111,8 @@ export class booking implements OnInit {
 
   for(let row = 0; row <= rows; row++){
     for(let seat = 1; seat <= seatsPerRow; seat++){
-      const SeatId = row * seatsPerRow + seat;
+      const SeatId = (row * seatsPerRow ) +  seat;
+      // example row9 * 14 + 1
       const IsOccupied = occupiedSeats.includes(SeatId);
 
       Layount.push({
@@ -134,59 +140,38 @@ export class booking implements OnInit {
     window.history.back();
   }
 
-/*
-  LoadSeats(showtimeId: number): void {
-    this.GetBookingsByShowtimeId(showtimeId);
+
+  LoadSeats(): void {
+    this.LoadBookings();
   }
-    */
-/*
-  GetBookingsByShowtimeId(showtimeId: number): void {
-
-    this.isLoading = true;
-    this.errorMessage = '';
-
-    this.bookingService.GetBookingsByShowtimeId(showtimeId).subscribe({
-
-      next: (data: Booking[]) => {
-
-        this.bookings = data ?? [];
-
-        console.log('Bookings for showtime:', this.bookings);
-
-       
 
 
-               
-
+LoadBookings(): void{
+  this.bookingservice.GetBookings().subscribe({
+    next: (data: Booking[]) => {
+      this.bookings = data ?? []; 
+      this.isLoading = false;
+      this.changeDetector.markForCheck();
+    },
+     error: (error) => {
+        console.error('Kunne ikke hente bookingen', error);
         this.isLoading = false;
-
-        this.changeDetector.detectChanges();
+        this.errorMessage = 'bookigene kunne ikke hentes. Kontrollér at backend-serveren kører.';
+        this.changeDetector.markForCheck();
       },
-
-      error: (error) => {
-
-        console.error(
-          'Kunne ikke hente bookinger:',
-          error
-        );
-
-        this.isLoading = false;
-
-        this.errorMessage =
-          'Kunne ikke hente sæder. Prøv igen senere.';
-
-        // IMPORTANT:
-        // Don't show all seats as available if the
-        // booking information could not be loaded.
-       
-
-        this.changeDetector.detectChanges();
-      }
     });
-  }
-*/
+}
 
-
+CreateBooking(booking: Booking){
+  this.bookingservice.CreateBooking(booking).subscribe({
+   next(data){
+    console.log({data}, "data send to db")
+   },
+    error(){
+      console.log("error ");
+    }
+  })
+}
 
   ClickOnSeat(seat: sæde): void {
 
@@ -246,8 +231,23 @@ get BookingTotal(): number {
 
 
 
-ConfirmBooking(): void{
- this.bookingConfirmed = true;
+ConfirmBooking(): void {
+  if (!this.spilletider?.id || !this.customerName.trim() || !this.customerEmail.trim() || this.SelectedSeats.length === 0) {
+    return;
+  }
+
+  this.SelectedSeats.forEach(seat => {
+    this.CreateBooking({
+      id: 0,
+      navn: this.customerName.trim(),
+      email: this.customerEmail.trim(),
+      spilletidId: this.spilletider!.id,
+      sædeId: seat.id,
+      BookingTispunkt: new Date(),
+    });
+  });
+
+  this.bookingConfirmed = true;
 }
 
 
