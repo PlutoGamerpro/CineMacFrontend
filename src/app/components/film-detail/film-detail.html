@@ -28,6 +28,14 @@
         <span class="badge">{{ film.genre }}</span>
         <h1>{{ film.title }}</h1>
         <p class="meta">⏱️ {{ film.varighed }} minutter</p>
+        <p>{{film.beskrivelse}}</p>
+        
+        @for(spilletid of filmshowtime; track spilletid.id){
+           <p>{{spilletid.startTime}}</p>
+
+
+        }
+
         
         <div class="actions">
           <a routerLink="/films" class="btn">← Tilbage til oversigt</a>

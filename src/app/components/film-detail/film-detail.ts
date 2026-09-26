@@ -6,6 +6,7 @@ import { Film } from '../../models/film';
 import { FilmShowtime } from '../../services/spilletid.service';
 import { Spilletid } from '../../models/Spilletid';
 import { SpilletidService } from '../../services/spilletid.service';
+import { Showtimes } from '../showtimes/showtimes';
 
 @Component({
   selector: 'app-film-detail',
@@ -15,39 +16,47 @@ import { SpilletidService } from '../../services/spilletid.service';
 })
 export class FilmDetail implements OnInit {
 
+  filmtoEdit!: string | number;
+
+
   constructor(private filmService: FilmService, private route: ActivatedRoute, private cdRef: ChangeDetectorRef, private spilletidservice: SpilletidService) {}
   errorMessage = '';
   isLoading = false;
   film: Film | null = null;
-  filmShowtimes: FilmShowtime[] = [];
+  //filmShowtimes: FilmShowtime[] = [];
+
+
+  filmshowtime: Spilletid[] = [];
+
+
   selectedDate: string | null = null;
   dateOptions: string[] = [];
 
-GetGroupShowtimes(): void {
-  this.isLoading = true;
-  this.errorMessage = '';
+  
 
-  this.spilletidservice.GroupedSpilletider(this.selectedDate)
-      .subscribe({
-      next: (data) => {
-        console.log('Hentede spilletider:', data);
-        this.filmShowtimes = data;
-        this.cdRef.markForCheck();
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Kunne ikke hente spilletider:', error);
-        this.errorMessage = 'Spilletiderne kunne ikke hentes.';
-        this.isLoading = false;
-        this.cdRef.markForCheck();
-      }
+  GetSpilletiderBy(){
+  this.spilletidservice.GetSpilletider().subscribe({
+    next: (data) =>   {
+      this.filmshowtime = data;
+     this.filmshowtime = data.filter(f => f.filmId === this.filmtoEdit);
+
+     this.filmshowtime.forEach(element => {
+      console.log(element);
+      this.cdRef.markForCheck();
+     });
+  },
+   error: (error) => {
+    this.cdRef.markForCheck();
+    
+   
+
+  }
     });
+
   }
 
-  selectDate(date: string | null): void {
-    this.selectedDate = date;
-    this.GetGroupShowtimes();
-  }
+
+  
 
 OnShowTimeClick(showtime: Spilletid): void {
   console.log('Selected showtime:', showtime);
@@ -63,6 +72,8 @@ this.film = null;
 this.filmService.GetFilmById(id).subscribe({
   next: (data) => {
     this.film = data ?? null;
+    this.filmtoEdit = this.film.id;
+    
     this.isLoading = false;
     this.cdRef.markForCheck();
   }, error: (error) => {
@@ -85,9 +96,9 @@ this.filmService.GetFilmById(id).subscribe({
 
     // 2. Call your https://localhost:7269 backend endpoint
     if (id) { 
-
-
-      this.GetFilmDetailById(id); 
+         this.GetFilmDetailById(id); 
+        this.GetSpilletiderBy();
+     
       
         this.dateOptions = Array.from({ length: 6 }, (_, index) => {
       const date = new Date();
@@ -96,7 +107,7 @@ this.filmService.GetFilmById(id).subscribe({
       return date.toISOString().slice(0, 10);
     });
 
-    this.GetGroupShowtimes();
+  //  this.GetGroupShowtimes();
           
     }
   }

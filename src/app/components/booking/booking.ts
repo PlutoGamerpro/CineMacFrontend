@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, signal } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -9,7 +9,8 @@ import { sæde } from '../../models/sæde';
 import { BookingService } from '../../services/booking.service';
 import { SpilletidService } from '../../services/spilletid.service';
 import { Spilletid } from '../../models/Spilletid';
-
+import { map } from 'rxjs';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-booking',
   standalone: true,
@@ -18,205 +19,286 @@ import { Spilletid } from '../../models/Spilletid';
   templateUrl: './booking.html',
 })
 export class booking implements OnInit {
-  rowseats: sæde[] = [];
+
+ rowseats: sæde[] = [];
 
   readonly cinemaImages = FILM_IMAGES;
 
   errorMessage = '';
   SelectedSeats: sæde[] = [];
 
-  occupiedSeatIds = signal<number[]>([]);
+  OccupiedSeats: number[] = [];
+
   spilletider: Spilletid | null = null;
 
   readonly bookinggebyr = 50;
   readonly ticketprice = 125;
-  totalprice = 0;
+   totalprice = 0;
 
   isLoading = false;
   bookings: Booking[] = [];
+  bookingt: Booking | null = null;
 
   showConfirmation = false;
   bookingConfirmed = false;
   customerName = '';
   customerEmail = '';
 
+
+
+
   constructor(
+    
     private spilletidService: SpilletidService,
     private changeDetector: ChangeDetectorRef,
     private route: ActivatedRoute,
-    private bookingservice: BookingService
+    private bookingservice: BookingService,
+   private router: Router
   ) {}
 
-  ngOnInit(): void {
-    this.isLoading = true;
-    this.errorMessage = '';
-    this.spilletider = null;
 
-    const id = this.route.snapshot.paramMap.get('id');
+ GetSpilletiderById(id: number | string): void {
+ this.isLoading = true;
+ this.errorMessage = '';
 
-    if (id) {
-      this.GetSpilletiderById(id);
-      this.LoadBookings(id); // 1. Pass showtime ID to load existing bookings
-    }
-  }
-
-  GetSpilletiderById(id: number | string): void {
-    this.spilletidService.GetSpilletider().subscribe({
-      next: (data) => {
-        this.spilletider = data.find((s) => s.id === Number(id)) ?? null;
-        this.isLoading = false;
-        this.changeDetector.markForCheck();
-      },
-      error: (error) => {
-        console.error('Kunne ikke hente film med ID:', id, error);
-        this.isLoading = false;
-        this.changeDetector.markForCheck();
-      },
+ this.spilletidService.GetSpilletider().subscribe({
+   next: (data) => {
+    // loops throw data find found id matches url then return spilletider else return null
+     this.spilletider = data.find(s => s.id === Number(id)) ?? null;
+     
+     //this.OccupiedSeats = this.bookings.map(s => s.sædeId);
+ 
+     this.isLoading = false;
+     console.log('Spilletider:', this.spilletider);
+     this.changeDetector.markForCheck();
+     
+   }, error: (error) => {
+     console.error('Kunne ikke hente film med ID:', id, error);
+     this.isLoading = false;
+     this.changeDetector.markForCheck();
+   }
     });
-  }
+  
 
-  LoadBookings(spilletidId?: number | string): void {
-    this.bookingservice.GetBookings().subscribe({
-      next: (data: Booking[]) => {
-        const currentSpilletidId = spilletidId ?? this.spilletider?.id;
+}
+     ngOnInit(): void {
+     this.isLoading = true;
+     this.errorMessage = '';
+     this.spilletider = null;
+     // 1. Get the 'id' parameter from the URL (/films/1 -> '1')
 
-        // 2. Filter bookings for THIS specific showtime
-        if (currentSpilletidId) {
-          this.bookings = data.filter((b) => b.spilletidId === Number(currentSpilletidId));
-        } else {
-          this.bookings = data ?? [];
-        }
+/*
+     var occupiedSeats = this.bookings.map(b => b.sædeId);
 
-        // 3. Update occupied IDs list
-        const occupied = this.bookings.map((b) => b.sædeId);
-        this.occupiedSeatIds.set(occupied);
+      console.log(
+          'Occupied seat IDs:',
+          occupiedSeats
+        );
 
-        // 4. Regenerate seat layout with new occupied data
-        this.rowseats = this.generateSeatsLayout(occupied);
-
-        this.isLoading = false;
-        this.changeDetector.markForCheck();
-      },
-      error: (error) => {
-        console.error('Kunne ikke hente bookingen', error);
-        this.isLoading = false;
-        this.errorMessage = 'Bookingerne kunne ikke hentes. Kontrollér at backend-serveren kører.';
-        this.changeDetector.markForCheck();
-      },
-    });
-  }
-
-  generateSeatsLayout(occupiedSeats: number[]): sæde[] {
-    const rows = 9; // Changed to 9 to match 'A' through 'I'
-    const seatsPerRow = 20;
-    const layout: sæde[] = [];
-
-    for (let row = 0; row < rows; row++) {
-      for (let seat = 1; seat <= seatsPerRow; seat++) {
-        const seatId = row * seatsPerRow + seat;
-        const isOccupied = occupiedSeats.includes(seatId);
-
-        layout.push({
-          rokke: String.fromCharCode(65 + row),
-          nummer: seat,
-          isAvailable: !isOccupied,
-          isOccupied: isOccupied,
-          isSelected: false,
-          salId: 0,
-          id: seatId,
-        });
+        this.rowseats =
+          this.generateSeatsLayout(occupiedSeats);
+*/
+     const id = this.route.snapshot.paramMap.get('id');
+ 
+     // 2. Call your https://localhost:7269 backend endpoint
+     if (id) { 
+       this.GetSpilletiderById(id); 
+       this.LoadBookings(); 
       }
-    }
-    return layout;
+   }
+
+  isOccupied(seatId: number): boolean {
+    return this.OccupiedSeats.includes(seatId)
   }
 
-  seatsForRow(row: string): sæde[] {
-    return this.rowseats.filter((seat) => seat.rokke === row);
+ generateSeatsLayout(occupiedSeats: number[]): sæde[]{
+  const rows =  14;
+  const seatsPerRow = 20;
+  const Layount: sæde[] = []
+   
+
+  for(let row = 0; row <= rows; row++){
+    for(let seat = 1; seat <= seatsPerRow; seat++){
+      const SeatId = (row * seatsPerRow ) +  seat;
+      // example row9 * 14 + 1
+      const IsOccupied = occupiedSeats.includes(SeatId);
+
+      Layount.push({
+        rokke: String.fromCharCode(65 + row),
+        nummer: SeatId,
+        isAvailable: !IsOccupied,
+        isOccupied: IsOccupied,
+        isSelected: false,
+        salId: 0,
+        id: SeatId,
+      });
+
+    }
   }
+  return Layount;
+ }
+ seatsForRow(row: string): sæde[]{
+  return this.rowseats.filter(seat => seat.rokke === row);
+ }
+
+  
+
 
   GoBack(): void {
+    
     window.history.back();
+   
   }
 
-  get OccupiedSeatsId(): number[] {
-    return [...new Set(this.bookings.map((seat) => seat.sædeId))];
+
+  LoadSeats(): void {
+    this.LoadBookings();
   }
+
+
+LoadBookings(): void{
+ const id = this.route.snapshot.paramMap.get('id');
+  this.bookingservice.GetBookings().subscribe({
+    next: (data: Booking[]) => {
+
+      this.bookings = data ?? []; 
+      
+      this.OccupiedSeats = this.bookings.filter(s => s.spilletidId == Number(id)).map(s => s.sædeId)
+      //this.OccupiedSeats = this.bookings.map(s => s.sædeId);
+      this.isLoading = false;
+     this.rowseats = this.generateSeatsLayout(this.OccupiedSeats);
+      this.changeDetector.markForCheck();
+    },
+     error: (error) => {
+        console.error('Kunne ikke hente bookingen', error);
+        this.isLoading = false;
+        this.errorMessage = 'bookigene kunne ikke hentes. Kontrollér at backend-serveren kører.';
+        this.changeDetector.markForCheck();
+      },
+    });
+}
+
+CreateBooking(booking: Booking){
+  this.bookingservice.CreateBooking(booking).subscribe({
+   next(data){
+    console.log({data}, "data send to db")
+
+     
+   },
+    error(){
+      console.log("error ");
+    }
+  })
+ // this.SelectedSeats = [];
+  //this.bookingConfirmed = true;
+  this.LoadBookings();
+}
 
   ClickOnSeat(seat: sæde): void {
-    if (seat.isAvailable && !seat.isOccupied) {
-      seat.isSelected = !seat.isSelected;
 
-      if (seat.isSelected) {
-        this.SelectedSeats.push(seat);
-      } else {
-        this.SelectedSeats = this.SelectedSeats.filter((s) => s.id !== seat.id);
+    if(seat.isAvailable && !seat.isOccupied){
+      seat.isSelected = !seat.isSelected;
+      
+      if(seat.isSelected && !this.SelectedSeats.includes(seat)){
+        
+        this.SelectedSeats.push(seat)
       }
+      else{  
+        this.SelectedSeats = this.SelectedSeats.filter(s => s !== seat );
+    }
+     
+     console.log(this.SelectedSeats);
+      /*
+      seat.isSelected = seat.isAvailable = false;
+        this.SelectedSeats.push(seat)
+        console.log(`Seat ${seat.række}${seat.nummer} selected: ${seat.isSelected}`);
+      }
+      else{
+      seat.isSelected = !seat.isSelected;
+      this.SelectedSeats.pop();
+      console.log(this.SelectedSeats.pop())
+      }
+      */
+      console.log(`Seat ${seat.rokke}${seat.nummer} selected: ${seat.isSelected}`);
     }
   }
 
+
   ContinueBooking(): void {
-    if (this.SelectedSeats.length > 0) {
+    if(this.SelectedSeats.length > 0){
       this.showConfirmation = true;
     }
   }
-
   ChooseOtherSeat(): void {
+      
     this.showConfirmation = false;
+    this.bookingConfirmed = false;
+   
+    
+  }
+  
+
+  setuserToHome(): void {
+   this.router.navigate(['/']);
   }
 
-  get SelectedSeatLabel(): string {
-    return this.SelectedSeats.map((seat) => `Række ${seat.rokke}, Sæde ${seat.nummer}`).join(', ');
-  }
-
-  get TicketPrice(): number {
-    return (this.totalprice = this.BookingTotal * this.SelectedSeats.length);
-  }
-
-  get BookingTotal(): number {
-    return (this.totalprice = (this.ticketprice + this.bookinggebyr) * this.SelectedSeats.length);
-  }
-
-  ConfirmBooking(): void {
-    const spilletidId = this.spilletider?.id;
-
-    if (
-      spilletidId == null ||
-      this.SelectedSeats.length === 0 ||
-      !this.customerEmail.trim() ||
-      !this.customerName.trim()
-    ) {
-      return;
-    }
-
-    let completedRequests = 0;
-
-    // Send HTTP POST request for each selected seat
-    this.SelectedSeats.forEach((seat) => {
-      const newBooking: Booking = {
-        id: 0,
-        navn: this.customerName,
-        email: this.customerEmail,
-        sædeId: seat.id,
-        spilletidId: spilletidId,
-        BookingTispunkt: new Date(),
-      };
-
-      this.bookingservice.CreateBooking(newBooking).subscribe({
-        next: () => {
-          completedRequests++;
-          // 5. When all bookings are saved, reload from backend
-          if (completedRequests === this.SelectedSeats.length) {
-            this.bookingConfirmed = true;
-            this.SelectedSeats = [];
-            this.LoadBookings(spilletidId); // Reloads seats & turns newly booked seats red!
-          }
-        },
-        error: (err) => console.error('Fejl ved oprettelse af booking:', err),
-      });
-    });
-  }
-
-  isOccupied(seatId: number): boolean {
-    return this.occupiedSeatIds().includes(seatId);
-  }
+  // map mean you convert an array to a string 
+  // example [a,12,b,20] => 'a', '12',  'b', '20  ( if not join then it still has [])
+get SelectedSeatLabel(): string { 
+  return this.SelectedSeats.map(seat => `Række ${seat.rokke}, Sæde ${seat.nummer}`)
+  .join(', ');
 }
+
+get TicketPrice(): number {
+  return this.totalprice = (this.BookingTotal) * this.SelectedSeats.length;
+}
+
+get BookingTotal(): number {
+
+  return this.totalprice =  (this.ticketprice + this.bookinggebyr) * this.SelectedSeats.length;
+
+}
+
+
+
+ConfirmBooking(): void {
+ const spilletidId = this.spilletider?.id;
+
+ if (spilletidId == null || this.SelectedSeats.length === 0 || !this.customerName.trim() || !this.customerEmail.trim()) {
+  return;
+ }
+
+ this.SelectedSeats.forEach(seat => {
+  this.CreateBooking({
+    id: 0,
+    navn: this.customerName,
+    email: this.customerEmail,
+    sædeId: seat.id,
+    BookingTispunkt: new Date(),
+    spilletidId,
+  });
+
+});
+
+ this.LoadBookings();
+
+  this.bookingConfirmed = true;
+  
+ 
+
+  
+ // this.LoadBookings();
+
+  //this.bookingConfirmed = true;
+}
+
+
+
+
+   
+
+}
+  
+
+
+   

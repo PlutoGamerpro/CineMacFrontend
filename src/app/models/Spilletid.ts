@@ -8,4 +8,5 @@ export interface Spilletid {
     salId: number;
     film?: Film;
     sal?: sal
+    
 }

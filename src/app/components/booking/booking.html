@@ -132,10 +132,16 @@
       } @else {
         <div class="confirmed-message">Booking bekræftet. Tak for dit køb!</div>
       }
-
+      @if(!bookingConfirmed){
       <button class="change-seat-button" type="button" (click)="ChooseOtherSeat()">
         ← Vælg et andet sæde
       </button>
+    }
+    @else{
+      <button class="change-seat-button" type="button" (click)="setuserToHome()">
+        Go to Home
+      </button>
+    }
     </form>
   }
 </main>
