@@ -7,7 +7,8 @@ import { FilmService } from '../../services/film.service';
 import { Film } from '../../models/film';
 import { Spilletid } from '../../models/Spilletid';
 import { SpilletidService } from '../../services/spilletid.service';
-
+import { Router } from '@angular/router';
+import { Showtimes } from '../showtimes/showtimes';
 @Component({
   selector: 'app-film-detail',
   standalone: true,
@@ -20,7 +21,8 @@ export class FilmDetail implements OnInit {
   filmtoEdit!: string | number;
 
 
-  constructor(private filmService: FilmService, private route: ActivatedRoute, private cdRef: ChangeDetectorRef, private spilletidservice: SpilletidService) {}
+
+  constructor(private filmService: FilmService, private route: ActivatedRoute, private cdRef: ChangeDetectorRef, private spilletidservice: SpilletidService, private router: Router) {}
   errorMessage = '';
   isLoading = false;
   film: Film | null = null;
@@ -71,6 +73,20 @@ export class FilmDetail implements OnInit {
       this.filmshowtime = data;
      this.filmshowtime = data.filter(f => f.filmId === this.filmtoEdit);
 
+
+     const DateToday = new Date();
+new Set(
+     this.dateOptions = Array.from(
+    this.filmshowtime
+    .filter(datetime => new Date(datetime.startTime) >=   DateToday  )
+    .map(datetime  => this.toDateKey(datetime .startTime))
+
+     )
+    )
+      // this.filmshowtime.map(showtime => this.toDateKey(showtime.startTime))
+   
+     this.selectedDate = this.dateOptions[0] ?? null;
+
      this.filmshowtime.forEach(element => {
       console.log(element);
       this.cdRef.markForCheck();
@@ -89,8 +105,9 @@ export class FilmDetail implements OnInit {
 
   
 
-OnShowTimeClick(showtime: Spilletid): void {
-  console.log('Selected showtime:', showtime);
+OnShowTimeClick(film: any): void {
+  console.log('Selected film:', film);
+  this.router.navigate(['/booking', film.id]);
   // Add your navigation or modal dialog logic here
 }
 
@@ -104,6 +121,7 @@ this.filmService.GetFilmById(id).subscribe({
   next: (data) => {
     this.film = data ?? null;
     this.filmtoEdit = this.film.id;
+    this.GetSpilletiderBy();
     
     this.isLoading = false;
     this.cdRef.markForCheck();
@@ -128,25 +146,6 @@ this.filmService.GetFilmById(id).subscribe({
     // 2. Call your https://localhost:7269 backend endpoint
     if (id) { 
          this.GetFilmDetailById(id); 
-        this.GetSpilletiderBy();
-     
-
-
-        this.dateOptions = this.filmshowtime.map(showtime => this.toDateKey(showtime.startTime))
-        .filter((value, index, self) => self.indexOf(value) === index)
-        .sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
-        this.selectDate(this.dateOptions[0]);
-      /*
-        this.dateOptions = Array.from({ length: 6 }, (_, index) => {
-      const date = new Date();
-      date.setHours(12, 0, 0, 0);
-      date.setDate(date.getDate() + index);
-      return this.toDateKey(date);
-    });
-    this.selectedDate = this.dateOptions[0];
-
-  //  this.GetGroupShowtimes();
-        */  
     }
   }
 }

@@ -52,6 +52,10 @@ GetGroupShowtimes(): void {
       next: (data) => {
         console.log('Hentede spilletider:', data);
         this.filmShowtimes = data;
+
+       
+
+
         this.changeDetectorRef.markForCheck();
         this.isLoading = false;
       },
@@ -69,6 +73,7 @@ GetGroupShowtimes(): void {
     this.GetGroupShowtimes();
   }
 
+ 
   OnShowTimeClick(film: any): void {
 
     console.log('Clicked showtime:', film);
