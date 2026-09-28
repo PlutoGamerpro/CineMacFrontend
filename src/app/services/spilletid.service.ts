@@ -17,6 +17,7 @@ export interface FilmShowtime {
   varighed: number;
   trailerUrl: string;
   billedeturl: string;
+  startTime: Date; // new added 
   showtimes: Showtime[];
 }
 

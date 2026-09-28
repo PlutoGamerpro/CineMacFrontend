@@ -8,7 +8,6 @@ import { Film } from '../../models/film';
 import { Spilletid } from '../../models/Spilletid';
 import { SpilletidService } from '../../services/spilletid.service';
 import { Router } from '@angular/router';
-import { Showtimes } from '../showtimes/showtimes';
 @Component({
   selector: 'app-film-detail',
   standalone: true,
@@ -36,11 +35,14 @@ export class FilmDetail implements OnInit {
   dateOptions: string[] = [];
 
   get filteredShowtimes(): Spilletid[] {
-    if (!this.selectedDate) {
-      return this.filmshowtime;
-    }
+    const now = new Date();
 
-    return this.filmshowtime.filter(showtime => this.toDateKey(showtime.startTime) === this.selectedDate);
+    return this.filmshowtime.filter(showtime => {
+      const startsInFuture = new Date(showtime.startTime) > now;
+      const matchesDate = !this.selectedDate || this.toDateKey(showtime.startTime) === this.selectedDate;
+
+      return startsInFuture && matchesDate;
+    });
   }
 
   selectDate(date: string): void {
@@ -73,19 +75,31 @@ export class FilmDetail implements OnInit {
       this.filmshowtime = data;
      this.filmshowtime = data.filter(f => f.filmId === this.filmtoEdit);
 
+   
+   
 
-     const DateToday = new Date();
-new Set(
-     this.dateOptions = Array.from(
-    this.filmshowtime
-    .filter(datetime => new Date(datetime.startTime) >=   DateToday  )
-    .map(datetime  => this.toDateKey(datetime .startTime))
 
-     )
-    )
+
       // this.filmshowtime.map(showtime => this.toDateKey(showtime.startTime))
    
+   
+
+    const CurrentlyDate = new Date();
+
+    this.dateOptions = [...new Set(
+      this.filmshowtime
+        .filter(showtime => new Date(showtime.startTime) > CurrentlyDate)
+        .map(showtime => this.toDateKey(showtime.startTime))
+    )].sort();
+
      this.selectedDate = this.dateOptions[0] ?? null;
+     
+
+
+    
+
+   
+   
 
      this.filmshowtime.forEach(element => {
       console.log(element);
@@ -105,7 +119,7 @@ new Set(
 
   
 
-OnShowTimeClick(film: any): void {
+OnShowTimeClick(film: Spilletid): void {
   console.log('Selected film:', film);
   this.router.navigate(['/booking', film.id]);
   // Add your navigation or modal dialog logic here
