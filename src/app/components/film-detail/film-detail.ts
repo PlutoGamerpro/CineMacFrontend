@@ -1,16 +1,17 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
 import { FilmService } from '../../services/film.service';
 import { Film } from '../../models/film';
-import { FilmShowtime } from '../../services/spilletid.service';
 import { Spilletid } from '../../models/Spilletid';
 import { SpilletidService } from '../../services/spilletid.service';
-import { Showtimes } from '../showtimes/showtimes';
 
 @Component({
   selector: 'app-film-detail',
   standalone: true,
+  imports: [CommonModule, RouterLink],
   templateUrl: './film-detail.html',
   styleUrl: './film-detail.css'
 })
@@ -31,6 +32,36 @@ export class FilmDetail implements OnInit {
 
   selectedDate: string | null = null;
   dateOptions: string[] = [];
+
+  get filteredShowtimes(): Spilletid[] {
+    if (!this.selectedDate) {
+      return this.filmshowtime;
+    }
+
+    return this.filmshowtime.filter(showtime => this.toDateKey(showtime.startTime) === this.selectedDate);
+  }
+
+  selectDate(date: string): void {
+    this.selectedDate = date;
+  }
+
+  formatDate(date: string): string {
+    return new Intl.DateTimeFormat('da-DK', { weekday: 'long', day: 'numeric', month: 'short' })
+      .format(new Date(`${date}T12:00:00`));
+  }
+
+  formatTime(value: Date | string): string {
+    return new Intl.DateTimeFormat('da-DK', { hour: '2-digit', minute: '2-digit', hour12: false })
+      .format(new Date(value));
+  }
+
+  private toDateKey(value: Date | string): string {
+    const date = new Date(value);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
 
   
 
@@ -104,8 +135,9 @@ this.filmService.GetFilmById(id).subscribe({
       const date = new Date();
       date.setHours(12, 0, 0, 0);
       date.setDate(date.getDate() + index);
-      return date.toISOString().slice(0, 10);
+      return this.toDateKey(date);
     });
+    this.selectedDate = this.dateOptions[0];
 
   //  this.GetGroupShowtimes();
           
