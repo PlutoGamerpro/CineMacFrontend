@@ -130,7 +130,13 @@ this.filmService.GetFilmById(id).subscribe({
          this.GetFilmDetailById(id); 
         this.GetSpilletiderBy();
      
-      
+
+
+        this.dateOptions = this.filmshowtime.map(showtime => this.toDateKey(showtime.startTime))
+        .filter((value, index, self) => self.indexOf(value) === index)
+        .sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+        this.selectDate(this.dateOptions[0]);
+      /*
         this.dateOptions = Array.from({ length: 6 }, (_, index) => {
       const date = new Date();
       date.setHours(12, 0, 0, 0);
@@ -140,7 +146,7 @@ this.filmService.GetFilmById(id).subscribe({
     this.selectedDate = this.dateOptions[0];
 
   //  this.GetGroupShowtimes();
-          
+        */  
     }
   }
 }
