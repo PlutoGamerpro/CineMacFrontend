@@ -41,26 +41,15 @@ export class Showtimes implements OnInit {
         console.log('Hentede spilletider:', data);
         this.filmShowtimes = data;
 
-        // 1. Only build dateOptions on the FIRST load when tabs are empty
+        // Only build date tabs once from future showtimes.
         if (this.dateOptions.length === 0) {
           const now = Date.now();
-          const allStartTimes: string[] = [];
 
-          // Collect all start times across all movies
-          data.forEach((filmGroup: any) => {
-            const showtimes = filmGroup.showtimes || filmGroup.spilletider || [];
-            showtimes.forEach((st: any) => {
-              if (st.startTime) {
-                allStartTimes.push(st.startTime);
-              }
-            });
-          });
-
-          // Filter out past showtimes and generate unique date keys
           this.dateOptions = [...new Set(
-            allStartTimes
-              .filter(startTime => new Date(startTime).getTime() > now)
-              .map(startTime => this.toDateKey(startTime))
+            data
+              .flatMap((filmGroup: any) => (filmGroup.showtimes ?? []).map((st: any) => st.startTime))
+              .filter((startTime: string) => new Date(startTime).getTime() > now)
+              .map((startTime: string) => this.toDateKey(startTime))
           )].sort();
         }
 
@@ -76,24 +65,19 @@ export class Showtimes implements OnInit {
     });
 }
 
-// 1. Filter individual showtime items to only include future times
-getUpcomingShowtimes(showtimes: any[]): any[] {
-  if (!showtimes) return [];
-  const now = Date.now();
-  return showtimes.filter(st => new Date(st.startTime).getTime() > now);
-}
+  get visibleFilmShowtimes(): any[] {
+    if (!this.filmShowtimes) return [];
 
-// 2. Filter film groups so movies with zero remaining showtimes don't display
-get visibleFilmShowtimes(): any[] {
-  if (!this.filmShowtimes) return [];
-  
-  return this.filmShowtimes
-    .map(group => ({
-      ...group,
-      upcomingShowtimes: this.getUpcomingShowtimes(group.showtimes)
-    }))
-    .filter(group => group.upcomingShowtimes.length > 0);
-}
+    const now = Date.now();
+
+    return this.filmShowtimes
+      .map(group => ({
+        ...group,
+        showtimes: (group.showtimes ?? []).filter(st => new Date(st.startTime).getTime() > now)
+      }))
+      .filter(group => group.showtimes.length > 0);
+  }
+    
 
   selectDate(date: string | null): void {
     this.selectedDate = date;

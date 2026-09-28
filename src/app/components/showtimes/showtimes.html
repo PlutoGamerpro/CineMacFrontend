@@ -57,7 +57,7 @@
           </header>
 
           <div class="movie-times">
-            @for (st of getUpcomingShowtimes(filmGroup.showtimes); track st.id) {
+            @for (st of filmGroup.showtimes; track st.id) {
               <button type="button"
                 class="time-card"
                 (click)="OnShowTimeClick(st)">
