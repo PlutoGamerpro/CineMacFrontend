@@ -9,7 +9,7 @@
         class="date-tab"
         [class.active]="selectedDate === null"
         (click)="selectDate(null)">
-         Alle dage
+          Alle dage
       </button>
 
       @for (date of dateOptions; track date) {
@@ -30,12 +30,12 @@
   } @else if (errorMessage) {
     <p class="empty-message error">{{ errorMessage }}</p>
 
-  } @else if (filmShowtimes.length === 0) {
+  } @else if (visibleFilmShowtimes.length === 0) {
     <p class="empty-message">Ingen spilletider fundet.</p>
 
   } @else {
     <section class="showtimes-list" aria-label="Film og spilletider">
-      @for (filmGroup of filmShowtimes; track filmGroup.filmId) {
+      @for (filmGroup of visibleFilmShowtimes; track filmGroup.filmId) {
         <article class="movie-showtimes">
           <header class="movie-header">
             <img
@@ -57,15 +57,13 @@
           </header>
 
           <div class="movie-times">
-            @for (st of filmGroup.showtimes; track st.id) {
+            @for (st of getUpcomingShowtimes(filmGroup.showtimes); track st.id) {
               <button type="button"
-               class="time-card"
-              (click)="OnShowTimeClick(st)"
-              
-              >
+                class="time-card"
+                (click)="OnShowTimeClick(st)">
                 <strong>{{ st.startTime | date:'HH:mm' }}</strong>
                 <span class="format-label">
-                  {{ st.salNavn.toLowerCase().includes('imax') ? 'IMAX' : '2D' }}
+                  {{ st.salNavn?.toLowerCase()?.includes('imax') ? 'IMAX' : '2D' }}
                 </span>
                 <span class="hall-label">{{ st.salNavn }}</span>
                 <span class="price-label">fra 75 kr</span>
@@ -75,7 +73,5 @@
         </article>
       }
     </section>
-
   }
-
 </main>
