@@ -72,8 +72,8 @@ export class Showtimes implements OnInit {
 
     return this.filmShowtimes
       .map(group => ({
-        ...group,
-        showtimes: (group.showtimes ?? []).filter(st => new Date(st.startTime).getTime() > now)
+        ...group,                                     // opretter ny date udfra filemen startpunkt og omdanner det til millisekunder
+        showtimes: (group.showtimes ?? []).filter(st => new Date(st.startTime).getTime() >= now)
       }))
       .filter(group => group.showtimes.length > 0);
   }
