@@ -274,11 +274,14 @@ ConfirmBooking(): void {
     navn: this.customerName,
     email: this.customerEmail,
     sædeId: seat.id,
-    BookingTispunkt: new Date(),
+    // .toISOString() omdanner Date-objektet til en standard tekststreng (f.eks. "2026-09-30T12:45:00.000Z"),
+    // som nemt kan sendes til backend/database uden tidszone-konflikter.
+    bookingTidspunkt: new Date().toISOString(),
     spilletidId,
   });
 
 });
+// 
 
  this.LoadBookings();
 

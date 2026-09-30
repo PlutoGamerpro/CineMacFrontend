@@ -28,6 +28,7 @@ export class SpilletidService {
 
   private apiUrl = 'https://localhost:7269/api/Spilletider/GetSpilletider';
   private apiGroupedUrl = 'https://localhost:7269/api/Spilletider/GroupedSpilletider';
+  private createUrl = 'https://localhost:7269/api/Spilletider/CreateSpilletid';
 
   constructor(private http: HttpClient) {}
 
@@ -36,7 +37,7 @@ export class SpilletidService {
   }
 
   GetSpilletiderById(id: number): Observable<Spilletid> {
-    return this.http.get<Spilletid>(`${this.apiUrl}/${id}`);
+    return this.http.get<Spilletid>(`https://localhost:7269/api/Spilletider/GetSpilletidById/${id}`);
   }
 
   GroupedSpilletider(date?: string | null): Observable<FilmShowtime[]> {
@@ -51,5 +52,8 @@ export class SpilletidService {
       this.apiGroupedUrl,
       { params }
     );
+  }
+  CreateSpilletid(spilletid: { startTime: string; filmId: number; salId: number }): Observable<Spilletid> {
+    return this.http.post<Spilletid>(this.createUrl, spilletid);
   }
 }

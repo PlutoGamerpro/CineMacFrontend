@@ -4,5 +4,7 @@ export interface Booking {
     email: string;
     spilletidId: number;
     sædeId: number;
-    BookingTispunkt: Date;
+    bookingTidspunkt: string;
+    spilletid?: { id: number; startTime: string; film?: { title: string } };
+    sæde?: { id: number; række?: number; nummer?: number };
 }

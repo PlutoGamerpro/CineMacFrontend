@@ -8,6 +8,7 @@ import { Prices } from './components/prices/prices';
 import {Buttontest} from './components/buttontest/buttontest';
 import { booking } from './components/booking/booking';
 import { FilmDetail } from './components/film-detail/film-detail';
+import { Admin } from './components/admin/admin';
 
 export const routes: Routes = [
 	{ path: '', component: Home },
@@ -19,6 +20,7 @@ export const routes: Routes = [
 	{ path: 'prices', component: Prices },
 	{path: 'films/:id', component: FilmDetail},
 	{path: 'buttontest', component: Buttontest},
+	{path: 'admin', component: Admin},
 	{ path: '**', redirectTo: '' },
 	
 ];
