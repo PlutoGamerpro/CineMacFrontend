@@ -1,170 +1,228 @@
-.cinema-page {
-	min-height: 100vh;
-	background: #080a10;
-	color: #f5f1e8;
-	font-family: Georgia, 'Times New Roman', serif;
+:host {
+  display: block;
 }
 
-.hero {
-	min-height: 590px;
-	display: flex;
-	align-items: end;
-	padding: 72px clamp(24px, 8vw, 120px);
-	background-color: #11141d;
-	background-position: center;
-	background-size: cover;
+.film-page {
+  min-height: 640px;
+  background: #08090f;
+  color: #f6f4f0;
 }
 
-.hero-content {
-	max-width: 590px;
+.film-intro,
+.film-results {
+  width: min(100% - 48px, 1312px);
+  margin: 0 auto;
 }
 
-.eyebrow,
-.card-genre {
-	margin: 0 0 14px;
-	color: #e8b85c;
-	font-family: Arial, sans-serif;
-	font-size: 11px;
-	font-weight: 700;
-	letter-spacing: 2px;
-	text-transform: uppercase;
+.film-intro {
+  padding: 34px 0 29px;
 }
 
-h1,
-h2,
-h3,
-p {
-	margin-top: 0;
+.eyebrow {
+  margin: 0 0 13px;
+  color: #f5a623;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
 }
 
 h1 {
-	max-width: 700px;
-	margin-bottom: 20px;
-	font-size: clamp(42px, 7vw, 82px);
-	line-height: .95;
+  margin: 0 0 26px;
+  color: #f3f1ef;
+  font-size: clamp(34px, 5vw, 46px);
+  letter-spacing: -1.8px;
+  line-height: 1;
 }
 
-.film-meta {
-	display: flex;
-	gap: 18px;
-	margin-bottom: 20px;
-	color: #d8d2c5;
-	font-family: Arial, sans-serif;
-	font-size: 13px;
+.search-field {
+  width: min(100%, 392px);
+  height: 34px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  border: 1px solid #292936;
+  border-radius: 5px;
+  background: #1a1a23;
+  color: #7e7d88;
 }
 
-.film-meta span + span::before {
-	content: '•';
-	margin-right: 18px;
-	color: #e8b85c;
+.search-field input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #f6f4f0;
+  font: inherit;
+  font-size: 10px;
 }
 
-.hero-description {
-	max-width: 520px;
-	color: #c9c5bd;
-	font-family: Arial, sans-serif;
-	font-size: 16px;
-	line-height: 1.65;
+.search-field input::placeholder {
+  color: #767580;
 }
 
-.trailer-button {
-	display: inline-flex;
-	align-items: center;
-	gap: 14px;
-	margin-top: 12px;
-	padding: 14px 20px;
-	background: #e8b85c;
-	color: #17130c;
-	font-family: Arial, sans-serif;
-	font-size: 13px;
-	font-weight: 700;
-	text-decoration: none;
+.genre-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 10px;
 }
 
-.film-section {
-	max-width: 1200px;
-	margin: 0 auto;
-	padding: 70px 24px 100px;
+.genre-filters button {
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 12px;
+  background: #1d1d27;
+  color: #aaa8b0;
+  cursor: pointer;
+  font: inherit;
+  font-size: 9px;
 }
 
-.section-heading h2 {
-	margin-bottom: 28px;
-	font-size: 38px;
+.genre-filters button:hover,
+.genre-filters button.selected {
+  background: #f5a623;
+  color: #17130e;
+}
+
+.film-results {
+  padding: 29px 0 62px;
+  border-top: 1px solid #151620;
+}
+
+.result-count {
+  margin: 0 0 14px 12px;
+  color: #81808a;
+  font-size: 9px;
 }
 
 .film-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-	gap: 24px;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 13px;
 }
 
 .film-card {
-	overflow: hidden;
-	background: #121620;
+  min-width: 0;
+  cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.film-card:hover {
+  transform: translateY(-2px);
+}
+
+.film-card:focus-visible {
+  outline: 2px solid #f5a623;
+  outline-offset: 3px;
+  border-radius: 6px;
 }
 
 .poster-wrap {
-	aspect-ratio: 2 / 3;
-	overflow: hidden;
-	background: #1d222d;
+  position: relative;
+  aspect-ratio: 1.55 / 2.25;
+  overflow: hidden;
+  border-radius: 5px;
+  background: #171821;
+  cursor: pointer;
+}
+
+.poster-wrap::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(7, 7, 12, .8), transparent 43%);
+  content: '';
 }
 
 .poster-wrap img {
-	width: 100%;
-	height: 100%;
-	display: block;
-	object-fit: cover;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform .25s ease;
+}
+
+.film-card:hover .poster-wrap img {
+  transform: scale(1.04);
+}
+
+.age-badge {
+  position: absolute;
+  z-index: 1;
+  top: 7px;
+  left: 7px;
+  max-width: calc(100% - 14px);
+  overflow: hidden;
+  padding: 3px 5px;
+  border-radius: 3px;
+  background: #e34f35;
+  color: #fff;
+  font-size: 7px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.film-card:nth-child(3n) .age-badge {
+  background: #2eab61;
 }
 
 .film-card-content {
-	padding: 18px;
+  padding: 9px 4px 0;
 }
 
-.film-card h3 {
-	margin-bottom: 12px;
-	font-size: 23px;
+.film-card h2 {
+  overflow: hidden;
+  margin: 0 0 5px;
+  color: #f2eff0;
+  font-size: 10px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.card-genre,
-.card-duration {
-	font-family: Arial, sans-serif;
+.film-card p {
+  overflow: hidden;
+  margin: 0;
+  color: #777681;
+  font-size: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.card-genre {
-	margin-bottom: 9px;
-	font-size: 10px;
+.film-card p span {
+  padding: 0 3px;
+  color: #f5a623;
 }
 
-.card-duration {
-	margin-bottom: 0;
-	color: #9b9b9b;
-	font-size: 12px;
+.status-message {
+  min-height: 170px;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  color: #8d8c96;
+  font-size: 12px;
 }
 
-.empty-state {
-	min-height: 300px;
-	display: grid;
-	place-items: center;
-	color: #c9c5bd;
-	font-family: Arial, sans-serif;
+@media (max-width: 900px) {
+  .film-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 600px) {
-	.hero {
-		min-height: 540px;
-		padding: 42px 24px;
-	}
+  .film-intro,
+  .film-results {
+    width: calc(100% - 32px);
+  }
 
-	.film-grid {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 12px;
-	}
+  .film-intro {
+    padding-top: 29px;
+  }
 
-	.film-card-content {
-		padding: 13px;
-	}
-
-	.film-card h3 {
-		font-size: 18px;
-	}
+  .film-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 12px;
+  }
 }

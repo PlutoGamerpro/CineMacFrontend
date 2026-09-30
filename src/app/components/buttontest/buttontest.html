@@ -1,0 +1,19 @@
+<div class="form-container">
+  <label for="ageInput">{{ ageLabel() }}</label>
+
+  <!-- Option A: Standard [(ngModel)] paired with model() in TS -->
+  <input 
+    id="ageInput" 
+    type="text" 
+    [(ngModel)]="userAge" 
+    placeholder="e.g. 25" 
+  />
+
+  <button (click)="saveInfo()">
+    {{ text() }}
+  </button>
+
+  @if (savedAge()) {
+    <p>Saved age: <strong>{{ savedAge() }}</strong></p>
+  }
+</div>

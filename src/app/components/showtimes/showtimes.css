@@ -1,0 +1,208 @@
+:host {
+    display: block;
+    min-height: calc(100vh - 66px);
+    background: #090a10;
+    color: #f4f2f7;
+}
+
+.showtimes-page {
+    min-height: calc(100vh - 66px);
+}
+
+.showtimes-intro {
+    min-height: 190px;
+}
+
+.showtimes-intro {
+    padding: 34px max(24px, calc((100% - 1240px) / 2)) 36px;
+    border-bottom: 1px solid #181925;
+}
+
+.eyebrow {
+    margin: 0 0 12px;
+    color: #f5a623;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+}
+
+h1 {
+    margin: 0 0 20px;
+    color: #f6f4fb;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(38px, 5vw, 58px);
+    letter-spacing: -1.8px;
+    line-height: 1;
+}
+
+.date-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.date-tab,
+.time-card {
+    border: 1px solid #252638;
+    border-radius: 5px;
+    font: inherit;
+}
+
+.date-tab {
+    padding: 8px 12px;
+    background: #171827;
+    color: #9998a8;
+    cursor: pointer;
+    font-size: 10px;
+}
+
+.date-tab:hover,
+.date-tab.active {
+    border-color: #f5a623;
+    background: #f5a623;
+    color: #17130e;
+}
+
+.showtimes-list {
+    width: min(100% - 48px, 1240px);
+    margin: 22px auto 64px;
+}
+
+.movie-showtimes {
+    margin-bottom: 14px;
+    overflow: hidden;
+    border: 1px solid #232435;
+    border-radius: 7px;
+    background: #13141f;
+}
+
+.movie-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 72px;
+    padding: 12px;
+    border-bottom: 1px solid #232435;
+}
+
+.movie-poster {
+    width: 34px;
+    height: 49px;
+    border-radius: 3px;
+    object-fit: cover;
+}
+
+.movie-details {
+    min-width: 0;
+}
+
+.movie-details h2 {
+    overflow: hidden;
+    margin: 0 0 5px;
+    color: #f5f3f9;
+    font-size: 13px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.movie-details p {
+    margin: 0;
+    color: #777789;
+    font-size: 9px;
+}
+
+.movie-details p span {
+    padding: 0 5px;
+    color: #a2a0ad;
+}
+
+.age-badge {
+    padding: 3px 6px;
+    border-radius: 3px;
+    background: #ed3043;
+    color: #fff;
+    font-size: 8px;
+    font-weight: 700;
+}
+
+.movie-times {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 12px;
+}
+
+.time-card {
+    display: flex;
+    min-width: 70px;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 8px 9px;
+    background: #1a1b2b;
+    color: #aaa9ba;
+    cursor: pointer;
+    text-align: left;
+}
+
+.time-card:hover {
+    border-color: #f5a623;
+}
+
+.time-card strong {
+    color: #f7f4fb;
+    font-size: 13px;
+}
+
+.format-label,
+.hall-label,
+.price-label {
+    margin-top: 3px;
+    font-size: 8px;
+}
+
+.format-label {
+    padding: 2px 4px;
+    background: #35364a;
+    color: #b9b8c7;
+}
+
+.hall-label {
+    color: #777789;
+}
+
+.price-label {
+    color: #f5a623;
+}
+
+.empty-message {
+    padding: 32px 0;
+    color: #9998a8;
+    text-align: center;
+}
+
+.error {
+    color: #ed6976;
+}
+
+@media (max-width: 600px) {
+    .showtimes-intro {
+        padding: 28px 20px 30px;
+    }
+
+    .showtimes-list {
+        width: calc(100% - 32px);
+    }
+
+    .date-tab {
+        flex: 1 1 auto;
+    }
+
+    .showtimes-intro {
+        min-height: auto;
+    }
+}
+
+.date-tab:first-child {
+    font-weight: 700;
+}

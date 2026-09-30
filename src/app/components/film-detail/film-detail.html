@@ -1,0 +1,70 @@
+<main class="film-detail-page">
+  @if (isLoading) {
+    <div class="state-card loading">
+      <div class="spinner"></div>
+      <p>Henter filmoplysninger...</p>
+    </div>
+  }
+
+  <!-- 2. Ingen data fundet eller FEJL -->
+  @else if (errorMessage) {
+    <div class="state-card error">
+      <div class="icon">⚠️</div>
+      <h2>Ingen data fundet</h2>
+      <p>{{ errorMessage }}</p>
+      <a routerLink="/film" class="btn">Tilbage til alle film</a>
+    </div>
+  }
+
+  @else if (film) {
+    <section class="film-hero">
+      <div class="hero-backdrop" [style.background-image]="'url(' + film.billedeturl + ')'" aria-hidden="true"></div>
+      <div class="hero-content">
+        <div class="poster-wrap">
+          <img [src]="film.billedeturl" [alt]="film.title + ' plakat'" />
+        </div>
+        <div class="film-info">
+          <div class="genre-list">
+            @for (genre of film.genre.split(','); track genre) {
+              <span class="badge">{{ genre.trim() }}</span>
+            }
+          </div>
+          <h1>{{ film.title }}</h1>
+          <div class="film-meta">
+            <span>{{ film.varighed }} min</span>
+            <span class="age-badge">11+</span>
+            <span class="rating" aria-label="4,5 ud af 5 stjerner">★★★★<span>★</span></span>
+            <span>8.4/10</span>
+          </div>
+          <p class="description">{{ film.beskrivelse }}</p>
+          <p class="credits"><strong>Instruktør:</strong> Lone Scherfig <strong>Medvirkende:</strong> Sidse Babett Knudsen, Nikolaj Coster-Waldau, Trine Dyrholm</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="showtimes-section" aria-labelledby="showtimes-title">
+      <h2 id="showtimes-title">Vælg spilletid</h2>
+      <div class="date-tabs" role="tablist" aria-label="Vælg dato">
+        @for (date of dateOptions; track date) {
+          <button type="button" class="date-tab" [class.active]="selectedDate === date" (click)="selectDate(date)">
+            {{ formatDate(date) }}
+          </button>
+        }
+      </div>
+
+      <div class="showtimes-list">
+        @for (spilletid of filteredShowtimes; track spilletid.id) {
+          <button type="button" class="time-card" (click)="OnShowTimeClick(spilletid)">
+            <strong>{{ formatTime(spilletid.startTime) }}</strong>
+            <span class="format-label">2D</span>
+            <span class="hall-label">{{ spilletid.sal?.navn || 'Sal ' + spilletid.salId }}</span>
+            <span class="seats-label">104 ledige sæder</span>
+            <span class="price-label">125 kr</span>
+          </button>
+        } @empty {
+          <p class="empty-message">Ingen spilletider på denne dato.</p>
+        }
+      </div>
+    </section>
+  }
+</main>

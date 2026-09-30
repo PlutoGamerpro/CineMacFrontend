@@ -1,0 +1,22 @@
+<header class="site-header">
+  <a class="brand" routerLink="/" aria-label="HeroldBio forside">
+    <span class="brand-mark" aria-hidden="true">▣</span>
+    <span>HEROLDBIO</span>
+  </a>
+
+  <nav class="main-nav" aria-label="Hovednavigation">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Forside</a>
+    <a routerLink="/film" routerLinkActive="active">Film</a>
+    <a routerLink="/" fragment="coming-soon">Kommende</a>
+    <a routerLink="/showtimes">Spilletider</a>
+    <a routerLink="/prices" routerLinkActive="active">Priser</a>
+    <a routerLink="/about" routerLinkActive="active">Om os</a>
+    <a routerLink="/facilities" routerLinkActive="active">Faciliteter</a>
+  
+  </nav>
+
+  <div class="header-actions">
+    <button class="search-button" type="button" aria-label="Søg">⌕</button>
+    <a class="book-button" routerLink="/showtimes">Book billet</a>
+  </div>
+</header>

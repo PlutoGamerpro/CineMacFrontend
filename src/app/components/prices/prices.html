@@ -1,0 +1,54 @@
+<main class="prices-page">
+  <section class="prices-hero">
+    <p class="eyebrow">Billetter</p>
+    <h1>Priser</h1>
+  </section>
+
+  <div class="prices-content">
+    <section class="price-section" aria-labelledby="ticket-prices-title">
+      <h2 id="ticket-prices-title">Enkeltbilletter</h2>
+      <div class="price-grid">
+        @for (item of ticketPrices; track item.title) {
+          <article class="price-card" [class.featured]="item.featured">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.description }}</p>
+            <strong>{{ item.price }}<small> kr</small></strong>
+            @if (item.featured) {
+              <span class="star" aria-hidden="true">*</span>
+            }
+          </article>
+        }
+      </div>
+    </section>
+
+    <section class="price-section" aria-labelledby="package-prices-title">
+      <h2 id="package-prices-title">Pakketilbud</h2>
+      <div class="price-grid package-grid">
+        @for (item of packages; track item.title) {
+          <article class="price-card package-card" [class.featured]="item.featured">
+            @if (item.badge) {
+              <span class="best-badge">{{ item.badge }}</span>
+            }
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.description }}</p>
+            <strong>{{ item.price }}<small> kr</small></strong>
+            @if (item.note) {
+              <span class="saving">{{ item.note }}</span>
+            }
+          </article>
+        }
+      </div>
+    </section>
+
+    <section class="information-panel" aria-labelledby="information-title">
+      <h2 id="information-title">Praktisk information</h2>
+      <ul>
+        <li>Alle priser inkl. moms og bookinggebyr online (15 kr) eller ved kassen (gratis)</li>
+        <li>Klippekort kan bruges af flere personer og er gyldige i 12 måneder</li>
+        <li>Billetter kan ombyttes indtil 30 min før forestilling</li>
+        <li>Gratis billetter til børn under 3 år (med ledsager)</li>
+        <li>Rabat på 20% for grupper på 10+ personer. Kontakt os for tilbud</li>
+      </ul>
+    </section>
+  </div>
+</main>

@@ -1,7 +1,12 @@
+import { Film } from "./film";
+import { sal } from "./sal";
+
 export interface Spilletid {
     id: number;
-    StartTime: Date;
+    startTime: Date;
     filmId: number;
-    SalId: number;
+    salId: number;
+    film?: Film;
+    sal?: sal
     
 }

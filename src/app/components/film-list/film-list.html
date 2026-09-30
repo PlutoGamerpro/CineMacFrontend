@@ -1,44 +1,52 @@
-<main class="cinema-page">
-  @if (featuredFilm; as film) {
-    <section class="hero" [style.backgroundImage]="'linear-gradient(90deg, rgba(8, 10, 16, .98) 0%, rgba(8, 10, 16, .82) 42%, rgba(8, 10, 16, .2) 100%), url(' + film.billedeUrl + ')'">
-      <div class="hero-content">
-        <p class="eyebrow">Udvalgt film</p>
-        <h1>{{ film.title }}</h1>
-        <div class="film-meta">
-          <span>{{ film.genre }}</span>
-          <span>{{ film.varighed }} minutter</span>
-        </div>
-        <p class="hero-description">{{ film.beskrivelse }}</p>
-        @if (film.trailerUrl) {
-          <a class="trailer-button" [href]="film.trailerUrl" target="_blank" rel="noopener">Se trailer <span aria-hidden="true">&#8594;</span></a>
-        }
-      </div>
-    </section>
-  } @else {
-    <section class="empty-state">
-      <p>Filmene indlæses...</p>
-    </section>
-  }
+<main class="film-page">
+  <section class="film-intro">
+    <p class="eyebrow">På lærredet nu</p>
+    <h1>Aktuelle film</h1>
 
-  <section class="film-section">
-    <div class="section-heading">
-      <p class="eyebrow">I biografen</p>
-      <h2>Flere film</h2>
-    </div>
+    <label class="search-field">
+      <span aria-hidden="true">⌕</span>
+      <input type="search" placeholder="Søg efter filmtitel..." aria-label="Søg efter filmtitel"
+        [value]="searchTerm" (input)="searchTerm = $any($event.target).value" />
+    </label>
 
-    <div class="film-grid">
-      @for (film of films.slice(1); track film.id) {
-        <article class="film-card">
-          <div class="poster-wrap">
-            <img [src]="film.billedeUrl" [alt]="film.title" />
-          </div>
-          <div class="film-card-content">
-            <p class="card-genre">{{ film.genre }}</p>
-            <h3>{{ film.title }}</h3>
-            <p class="card-duration">{{ film.varighed }} min.</p>
-          </div>
-        </article>
+    <div class="genre-filters" aria-label="Filtrer efter genre">
+      @for (genre of genres; track genre) {
+        <button type="button" [class.selected]="selectedGenre === genre" (click)="selectedGenre = genre">{{ genre }}</button>
       }
     </div>
+  </section>
+
+  <section class="film-results" aria-live="polite">
+    @if (isLoading) {
+      <p class="status-message">Filmene indlæses...</p>
+    } @else if (errorMessage) {
+      <p class="status-message">{{ errorMessage }}</p>
+    } @else if (filteredFilms.length === 0) {
+      <p class="status-message">Ingen film matcher din søgning.</p>
+    } @else {
+      <p class="result-count">{{ filteredFilms.length }} film vises</p>
+      <div class="film-grid">
+        @for (film of filteredFilms; track film.id) {
+          <article
+            class="film-card" 
+            role="button"
+            tabindex="0"
+            [attr.aria-label]="'Se film ' + film.title"
+            (click)="onFilmClick(film)"
+            (keydown.enter)="onFilmClick(film)"
+            (keydown.space)="onFilmClick(film); $event.preventDefault()"
+          >
+            <div class="poster-wrap">
+              <img [src]="film.billedeturl" [alt]="film.title" (click)="onFilmClick(film); $event.stopPropagation()" />
+              <span class="age-badge">{{ film.genre }}</span>
+            </div>
+            <div class="film-card-content">
+              <h2>{{ film.title }}</h2>
+              <p>{{ film.varighed }} min. <span aria-hidden="true">•</span> {{ film.genre }}</p>
+            </div>
+          </article>
+        }
+      </div>
+    }
   </section>
 </main>
