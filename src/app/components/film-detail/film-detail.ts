@@ -75,12 +75,7 @@ export class FilmDetail implements OnInit {
       this.filmshowtime = data;
      this.filmshowtime = data.filter(f => f.filmId === this.filmtoEdit);
 
-   
-   
-
-
-
-      // this.filmshowtime.map(showtime => this.toDateKey(showtime.startTime))
+         // this.filmshowtime.map(showtime => this.toDateKey(showtime.startTime))
    
    
 

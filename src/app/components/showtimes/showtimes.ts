@@ -47,6 +47,7 @@ export class Showtimes implements OnInit {
 
           this.dateOptions = [...new Set(
             data
+            // flatmap sørger for at vi ikke ender op med mange array men et samlet array af starttidspunkter, som vi så filtrerer for at få de fremtidige spilletider
               .flatMap((filmGroup: any) => (filmGroup.showtimes ?? []).map((st: any) => st.startTime))
               .filter((startTime: string) => new Date(startTime).getTime() > now)
               .map((startTime: string) => this.toDateKey(startTime))

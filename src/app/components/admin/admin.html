@@ -1,0 +1,47 @@
+<main class="admin-page">
+  <section class="admin-hero">
+    <p class="eyebrow">HEROLDBIO · ADMINISTRATION</p>
+    <h1>Biografkontrol</h1>
+    <p>Opret film, planlæg visninger og hold styr på alle bookinger ét sted.</p>
+  </section>
+
+  <nav class="admin-tabs" aria-label="Administration">
+    <button [class.active]="activeTab === 'film'" (click)="selectTab('film')">Film <span>{{ films.length }}</span></button>
+    <button [class.active]="activeTab === 'spilletider'" (click)="selectTab('spilletider')">Spilletider <span>{{ showtimes.length }}</span></button>
+    <button [class.active]="activeTab === 'bookinger'" (click)="selectTab('bookinger')">Bookinger <span>{{ bookings.length }}</span></button>
+  </nav>
+
+  @if (message) { <p class="notice success">✓ {{ message }}</p> }
+  @if (errorMessage) { <p class="notice error">{{ errorMessage }}</p> }
+
+  @if (activeTab === 'film') {
+    <section class="admin-grid">
+      <form class="admin-card form-card" (ngSubmit)="saveFilm()">
+        <div class="card-heading"><div><p class="eyebrow">FILMKATALOG</p><h2>{{ editingFilmId === null ? 'Tilføj en film' : 'Redigér film' }}</h2></div></div>
+        <label>Titel<input name="title" [(ngModel)]="filmForm.title" required></label>
+        <label>Beskrivelse<textarea name="beskrivelse" [(ngModel)]="filmForm.beskrivelse" rows="4"></textarea></label>
+        <div class="form-row"><label>Genre<input name="genre" [(ngModel)]="filmForm.genre" required></label><label>Varighed (min.)<input name="varighed" [(ngModel)]="filmForm.varighed" type="number" min="1" required></label></div>
+        <label>Plakat-URL<input name="billedeturl" [(ngModel)]="filmForm.billedeturl" type="url" placeholder="https://..."></label>
+        <label>Trailer-URL <span class="optional">valgfri</span><input name="trailerUrl" [(ngModel)]="filmForm.trailerUrl" type="url" placeholder="https://..."></label>
+        <div class="form-actions"><button class="primary" [disabled]="isSaving">{{ isSaving ? 'Gemmer...' : editingFilmId === null ? 'Opret film' : 'Gem ændringer' }}</button>@if (editingFilmId !== null) { <button type="button" class="secondary" (click)="cancelFilmEdit()">Annullér</button> }</div>
+      </form>
+      <section class="admin-card list-card"><div class="card-heading"><div><p class="eyebrow">OVERSIGT</p><h2>Eksisterende film</h2></div><span class="count">{{ films.length }}</span></div>
+        <div class="film-list">@for (film of films; track film.id) { <article class="film-row"><img [src]="film.billedeturl || 'https://placehold.co/80x110/222/fff?text=Film'" [alt]="film.title"><div class="film-info"><h3>{{ film.title }}</h3><p>{{ film.genre }} · {{ film.varighed }} min.</p></div><div class="row-actions"><button (click)="editFilm(film)">Redigér</button><button class="danger-text" (click)="deleteFilm(film)">Slet</button></div></article> } @empty { <p class="empty">Der er endnu ingen film.</p> }</div>
+      </section>
+    </section>
+  }
+
+  @if (activeTab === 'spilletider') {
+    <section class="admin-grid"><form class="admin-card form-card" (ngSubmit)="saveShowtime()"><div class="card-heading"><div><p class="eyebrow">PROGRAM</p><h2>Planlæg spilletid</h2></div></div>
+      <label>Film<select name="film" [(ngModel)]="showtimeForm.filmId" required><option [ngValue]="0" disabled>Vælg en film</option>@for (film of films; track film.id) { <option [ngValue]="+film.id">{{ film.title }}</option> }</select></label>
+      <label>Sal<select name="sal" [(ngModel)]="showtimeForm.salId" required><option [ngValue]="0" disabled>Vælg en sal</option>@for (hall of halls; track hall.id) { <option [ngValue]="hall.id">{{ hall.navn }}</option> }</select></label>
+      <label>Starttidspunkt<input name="start" [(ngModel)]="showtimeForm.startTime" type="datetime-local" required></label><div class="form-actions"><button class="primary" [disabled]="isSaving">{{ isSaving ? 'Gemmer...' : 'Opret spilletid' }}</button></div>
+    </form><section class="admin-card list-card"><div class="card-heading"><div><p class="eyebrow">KALENDER</p><h2>Planlagte visninger</h2></div><span class="count">{{ showtimes.length }}</span></div><div class="showtime-list">@for (showtime of showtimes; track showtime.id) { <article class="showtime-row"><time>{{ showtime.startTime | date:'dd. MMM · HH:mm' }}</time><div><h3>{{ filmTitle(showtime) }}</h3><p>{{ hallName(showtime) }}</p></div></article> } @empty { <p class="empty">Ingen spilletider er planlagt.</p> }</div></section></section>
+  }
+
+  @if (activeTab === 'bookinger') {
+    <section class="admin-card bookings-card"><div class="card-heading"><div><p class="eyebrow">BILLETTER</p><h2>Alle bookinger</h2></div><label class="search"><span>⌕</span><input [(ngModel)]="bookingSearch" placeholder="Søg kunde, film eller dato"></label></div>
+      <div class="table-wrap"><table><thead><tr><th>Kunde</th><th>Film og visning</th><th>Sæde</th><th>Booket</th><th></th></tr></thead><tbody>@for (booking of filteredBookings; track booking.id) { <tr><td><strong>{{ booking.navn }}</strong><small>{{ booking.email }}</small></td><td><strong>{{ bookingFilm(booking) }}</strong><small>{{ booking.spilletid?.startTime | date:'dd. MMM yyyy · HH:mm' }}</small></td><td>{{ bookingSeat(booking) }}</td><td>{{ booking.bookingTidspunkt | date:'dd. MMM HH:mm' }}</td><td><button class="cancel-button" (click)="cancelBooking(booking)">Annullér</button></td></tr> } @empty { <tr><td colspan="5" class="empty">Ingen bookinger matcher din søgning.</td></tr> }</tbody></table></div>
+    </section>
+  }
+</main>

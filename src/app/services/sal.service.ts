@@ -9,16 +9,16 @@ import {sal} from "../models/sal";
   providedIn: 'root'
 })
 export class SalService {
-  private apiUrl = 'https://localhost:7269/api/Sal'; // Replace with your API endpoint
+  private apiUrl = 'https://localhost:7269/api/Sal';
 
 
   constructor(private http: HttpClient) { }
 
 GetSæde(): Observable<sal[]> {
-    return this.http.get<sal[]>(this.apiUrl);
+    return this.http.get<sal[]>(`${this.apiUrl}/GetAllSals`);
   }
 GetSædeId(id:number): Observable<sal>{
-    return this.http.get<sal>(`${this.apiUrl}/${id}`);
+    return this.http.get<sal>(`${this.apiUrl}/GetSalById/${id}`);
   }
 
 }
