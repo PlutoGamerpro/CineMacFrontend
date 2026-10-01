@@ -28,7 +28,7 @@ export class Home {
     this.filmService.GetFilm().subscribe({
       next: (films) => {
         const availableFilms = films ?? [];
-        this.featuredFilm = availableFilms[0];
+        this.featuredFilm = availableFilms[0]; // slide tager elemmenter 0-6 og 
         this.currentFilms = availableFilms.slice(0, 6);
         this.upcomingFilms = availableFilms.slice(6, 10);
         // The first HTTP response can arrive after the initial render. Ensure

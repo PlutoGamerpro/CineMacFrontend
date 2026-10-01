@@ -111,6 +111,10 @@ export class booking implements OnInit {
     return this.OccupiedSeats.includes(seatId)
   }
 
+  
+
+
+
  generateSeatsLayout(occupiedSeats: number[]): sæde[]{
   const rows =  14;
   const seatsPerRow = 20;
